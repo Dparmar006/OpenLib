@@ -25,7 +25,7 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
 
     phone = models.CharField(max_length=12, null=True, blank=True)
-    gender = models.CharField(max_length=10)
+    gender = models.CharField(max_length=10, null=True, blank=True)
     session_token = models.CharField(max_length=10, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
