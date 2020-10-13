@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -132,6 +133,7 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = "books.CustomUser"
 
 CORS_ORIGIN_ALLOW_ALL = True
+
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
