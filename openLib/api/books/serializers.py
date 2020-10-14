@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework.decorators import authentication_classes, permission_classes
 
 from .models import CustomUser
+from .models import Books
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -32,3 +33,10 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
         fields = ('first_name', 'last_name', 'email', 'phone',
                   'gender', 'is_active', 'is_staff', 'is_superuser', 'password')
+
+
+class BooksSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Books
+        fields = ('title', 'author', 'subject', 'description',
+                  'uploaded_at', 'rating', 'edition', 'user')

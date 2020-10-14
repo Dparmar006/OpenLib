@@ -1,18 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+
 # Create your models here.
-
-
-# class Books(models.Model):
-#     title = models.CharField(max_length=50)
-#     author = models.CharField(max_length=50)
-#     subject = models.CharField(max_length=50)
-#     description = models.TextField(max_length=500)
-#     uploaded_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     rating = models.IntegerField(max_length=1)
-#     edition = models.IntegerField(max_length=2)
-#     user = models.ForeignKey(AbstractUser, on_delete=models.CASCADE)
 
 
 class CustomUser(AbstractUser):
@@ -29,3 +18,18 @@ class CustomUser(AbstractUser):
     session_token = models.CharField(max_length=10, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Books(models.Model):
+    title = models.CharField(max_length=50)
+    author = models.CharField(max_length=50)
+    subject = models.CharField(max_length=50)
+    description = models.TextField(max_length=500)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    rating = models.IntegerField(null=True, blank=True, default=0)
+    edition = models.IntegerField(null=True, blank=True, default=1)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
