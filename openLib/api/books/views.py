@@ -79,16 +79,14 @@ def signin(request, *args, **kwargs):
 
 @csrf_exempt
 def signout(request, id):
-    logout(request)
-
     UserModel = get_user_model()
-
     try:
         user = UserModel.objects.get(pk=id)
-        user.session_tiken = "0"
+        user.session_token = "0"
         user.save()
     except UserModel.DoesNotExist:
         return JsonResponse({'error': "Invalid user id"})
+    logout(request)
 
     return JsonResponse({'success': 'Logout sucess'})
 
@@ -136,4 +134,4 @@ def addBooks(request, id, token):
         qry = Books.objects.create(title=bookTitle, description=bookDescription,
                                    author=bookAuthor, edition=bookEdition, subject=bookSubject, user=user)
         qry.save()
-        return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'Book added successfully', 'code': '201'})
+        return JsonResponse({'success': 'True', 'error': 'False', 'msg': f'{bookTitle} added successfully', 'code': '201'})

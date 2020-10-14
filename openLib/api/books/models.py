@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class CustomUser(AbstractUser):
-    name = models.CharField(max_length=50, default='Anonymous')
+    # name = models.CharField(max_length=50, default='Anonymous')
     email = models.EmailField(max_length=256, unique=True)
 
     username = None
@@ -27,6 +27,7 @@ class Books(models.Model):
     description = models.TextField(max_length=500)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # NOTE: Multi-multi relationship with user for RAATING
     rating = models.IntegerField(null=True, blank=True, default=0)
     edition = models.IntegerField(null=True, blank=True, default=1)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
