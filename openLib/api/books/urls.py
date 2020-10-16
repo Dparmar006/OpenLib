@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
+
 from . import views
 
 router = routers.DefaultRouter()
@@ -13,5 +14,9 @@ urlpatterns = [
     path("logout/<int:id>/", views.signout, name="logout"),
 
     path("", include(router.urls), name=""),
-    path("addBook/<str:id>/<str:token>/", views.addBooks, name="add a new book")
+    path("addBook/<str:id>/<str:token>/",
+         views.addBooks, name="add a new book"),
+
+    # pdf
+
 ]
