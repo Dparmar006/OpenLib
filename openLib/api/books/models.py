@@ -28,10 +28,12 @@ class Books(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     stream = models.CharField(max_length=50)
-    # NOTE: Multi-multi relationship with user for RAATING
-    rating = models.IntegerField(null=True, blank=True, default=0)
+    # NOTE: Multi-multi relationship with user for RATING
+    upvote = models.ManyToManyField(
+        CustomUser, related_name='rating_book', blank=True)
     edition = models.IntegerField(null=True, blank=True, default=1)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
+                             related_name='referencing_owner_of_the_book')
     file = models.FileField(upload_to="bookFiles", max_length=100)
 
     def __str__(self):

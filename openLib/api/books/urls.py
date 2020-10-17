@@ -17,6 +17,7 @@ urlpatterns = [
     path("addBook/<str:id>/<str:token>/",
          views.addBooks, name="add a new book"),
 
-    # pdf
+    # Rating
+    path("upvote/<int:bookId>/", views.upvoteBook, name="Upvoting book")
 
 ]

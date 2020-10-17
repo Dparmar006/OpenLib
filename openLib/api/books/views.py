@@ -1,4 +1,5 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
 import random
@@ -135,3 +136,21 @@ def addBooks(request, id, token):
                                    author=bookAuthor, edition=bookEdition, subject=bookSubject, user=user)
         qry.save()
         return JsonResponse({'success': 'True', 'error': 'False', 'msg': f'{bookTitle} added successfully', 'code': '201'})
+
+# NOTE: RATING =>
+
+
+@csrf_exempt
+def upvoteBook(request, bookId):
+    if request.method == 'POST':
+        try:
+            book = Books.objects.get(id=bookId)
+            print(book)
+        except:
+            raise Http404
+        # upvotedUsers = book.upvote
+        # print(upvotedUsers, "us")
+        book.upvote.add(request.user)
+        book.save()
+        return JsonResponse({'success': 'True', 'msg': 'Book upvoted', 'code': '200'})
+    return JsonResponse({'error': 'couldn\'t upvote'})
