@@ -9,7 +9,6 @@ router.register('user', views.UserViewSet)
 router.register(r'', views.BooksViewSet)
 
 urlpatterns = [
-    # path("user/", include(router.urls), name="users"),
     path("login/", views.signin, name="login"),
     path("logout/<int:id>/", views.signout, name="logout"),
 
@@ -17,8 +16,7 @@ urlpatterns = [
     path("addBook/<str:id>/<str:token>/",
          views.addBooks, name="add a new book"),
 
-    # Rating
     path("<int:bookId>/<str:action>/",
-         views.perfromActionOnBook, name="Upvoting book")
+         views.perfromActionOnBook, name="Upvoting book")  # NOTE: LIKE, UNLIKE TODO: Report
 
 ]
