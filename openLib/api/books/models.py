@@ -29,7 +29,7 @@ class Books(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     stream = models.CharField(max_length=50)
     # NOTE: Multi-multi relationship with user for RATING
-    upvote = models.ManyToManyField(
+    like = models.ManyToManyField(
         CustomUser, related_name='rating_book', blank=True)
     edition = models.IntegerField(null=True, blank=True, default=1)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE,

@@ -141,16 +141,19 @@ def addBooks(request, id, token):
 
 
 @csrf_exempt
-def upvoteBook(request, bookId):
+def perfromActionOnBook(request, bookId, action):
+    action = str(action).lower().strip()
     if request.method == 'POST':
-        try:
-            book = Books.objects.get(id=bookId)
-            print(book)
-        except:
-            raise Http404
-        # upvotedUsers = book.upvote
-        # print(upvotedUsers, "us")
-        book.upvote.add(request.user)
-        book.save()
-        return JsonResponse({'success': 'True', 'msg': 'Book upvoted', 'code': '200'})
-    return JsonResponse({'error': 'couldn\'t upvote'})
+        if action == 'like':
+            book = Books.objects.get(pk=bookId)
+            book.like.add(request.user)
+            book.save()
+            return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'You liked a book'})
+        elif action == 'unlike':
+            book = Books.objects.get(pk=bookId)
+            book.like.remove(request.user)
+            book.save()
+            return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'You unliked a book'})
+        else:
+            return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'Wrong URL/action on book'})
+    return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'An error occured, Please do it again !'})

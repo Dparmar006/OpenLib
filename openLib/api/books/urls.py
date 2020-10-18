@@ -13,11 +13,12 @@ urlpatterns = [
     path("login/", views.signin, name="login"),
     path("logout/<int:id>/", views.signout, name="logout"),
 
-    path("", include(router.urls), name=""),
+    path("", include(router.urls), name="see up at the 'router'"),
     path("addBook/<str:id>/<str:token>/",
          views.addBooks, name="add a new book"),
 
     # Rating
-    path("upvote/<int:bookId>/", views.upvoteBook, name="Upvoting book")
+    path("<int:bookId>/<str:action>/",
+         views.perfromActionOnBook, name="Upvoting book")
 
 ]
