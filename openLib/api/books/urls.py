@@ -14,7 +14,9 @@ urlpatterns = [
 
     path("", include(router.urls), name="see up at the 'router'"),
     path("addBook/<str:id>/<str:token>/",
-         views.addBooks, name="add a new book"),
+         views.addBook, name="add a new book"),
+    path("<int:bookId>/<str:id>/<str:token>/removeBook/",
+         views.removeBook, name="remove a new book"),
 
     path("<int:bookId>/<str:action>/",
          views.perfromActionOnBook, name="Upvoting book")  # NOTE: LIKE, UNLIKE TODO: Report

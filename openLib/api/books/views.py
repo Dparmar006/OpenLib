@@ -114,7 +114,7 @@ class BooksViewSet(viewsets.ModelViewSet):
 # Show books
 
 @csrf_exempt
-def addBooks(request, id, token):
+def addBook(request, id, token):
     if not validateUserSession(id, token):
         return JsonResponse({'error': 'Unexpected logout, Please re-login'})
 
@@ -137,7 +137,15 @@ def addBooks(request, id, token):
         qry.save()
         return JsonResponse({'success': 'True', 'error': 'False', 'msg': f'{bookTitle} added successfully', 'code': '201'})
 
-# NOTE: RATING =>
+
+@csrf_exempt
+def removeBook(request, bookId, id, token):
+    if not validateUserSession(id, token):
+        return JsonResponse({'error': 'Unexpected logout, Please re-login'})
+    if request.method == "POST":
+        Books.objects.get(id=bookId).delete()
+        return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'Book DELETED successfully', 'code': '201'})
+    return JsonResponse({'success': 'False', 'error': 'True', 'msg': 'Could not delete this book, Might alredy have been deleted', 'code': '404'})
 
 
 @csrf_exempt
