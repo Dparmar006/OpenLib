@@ -13,7 +13,7 @@ from .serializers import UserSerializer, BooksSerializer
 import re
 # Create your views here.
 
-# NOTE: Utilites
+# NOTE: USER OPERATIONS ["VALIDATE_USER_SESSION", "GENERATE_SESSION_TOKEN", "SIGNIN", "SIGNOUT", "USER_VIEW_SETS"]
 
 
 def validateUserSession(id, token):
@@ -104,14 +104,12 @@ class UserViewSet(viewsets.ModelViewSet):
             return [permission() for permission in self.permission_classes]
 
 
-# NOTE: books section
+# NOTE: BOOK OPERATIONS ["ADD", "REMOVE", "VIEW"]
 
 class BooksViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
 
-
-# Show books
 
 @csrf_exempt
 def addBook(request, id, token):
@@ -143,8 +141,12 @@ def removeBook(request, bookId, id, token):
     if not validateUserSession(id, token):
         return JsonResponse({'error': 'Unexpected logout, Please re-login'})
     if request.method == "POST":
-        Books.objects.get(id=bookId).delete()
-        return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'Book DELETED successfully', 'code': '201'})
+        book = Books.objects.get(id=bookId)
+        if book.uploaded_by == request.user:
+            Books.objects.get(id=bookId).delete()
+            return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'Book DELETED successfully', 'code': '201'})
+        else:
+            return JsonResponse({'success': 'False', 'error': 'True', 'msg': 'You can\'t delete other people\'s books', 'code': '404'})
     return JsonResponse({'success': 'False', 'error': 'True', 'msg': 'Could not delete this book, Might alredy have been deleted', 'code': '404'})
 
 
