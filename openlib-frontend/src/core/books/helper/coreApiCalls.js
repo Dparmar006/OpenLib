@@ -9,3 +9,7 @@ export const getAllBooks = () => {
     })
     .catch((error) => console.log(error));
 };
+
+export const getNumberOfLikes = (arr) => {
+  return arr.length;
+};

@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAllBooks, getNumberOfLikes } from "../books/helper/coreApiCalls";
 
 const Base = () => {
+  const [books, setBooks] = useState([]);
+  const [error, setError] = useState(false);
+
+  const loadAllBooks = () => {
+    getAllBooks()
+      .then((data) => {
+        if (data.error) {
+          setError(data.error);
+          console.log(error);
+        } else {
+          setBooks(data);
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    loadAllBooks();
+  });
+
   return (
     <div>
       <div>
@@ -161,94 +182,47 @@ const Base = () => {
                   <div className="progress-table">
                     <div className="table-head">
                       <div className="serial">#</div>
-                      <div className="country">Countries</div>
-                      <div className="visit">Visits</div>
+                      <div className="country">Book Title</div>
+                      <div className="country">Author</div>
+                      <div className="visit">Likes</div>
+                      <div className="visit">Download</div>
                       <div className="percentage">Percentages</div>
                     </div>
-                    <div className="table-row">
-                      <div className="serial">01</div>
-                      <div className="country">
-                        {" "}
-                        <img src="assets/img/elements/f1.jpg" alt="flag" />
-                        Canada
-                      </div>
-                      <div className="visit">645032</div>
-                      <div className="percentage">
-                        <div className="progress">
-                          <div
-                            className="progress-bar color-1"
-                            role="progressbar"
-                            style={{ width: "80%" }}
-                            aria-valuenow="80"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
+                    {/* SINGLE ROW OF RESULT */}
+                    {books.map((books, index) => {
+                      return (
+                        <div className="table-row">
+                          <div className="serial">{index + 1}</div>
+                          <div className="country">{books.title}</div>
+                          <div className="country">{books.author}</div>
+                          <div className="visit">
+                            {getNumberOfLikes(books.like)}
+                          </div>
+                          <div className="country">
+                            <a
+                              href={books.file}
+                              target="_blank"
+                              className="text-black-50"
+                            >
+                              {/* <i className="fab fa-download"></i> */}
+                              Download
+                            </a>
+                          </div>
+                          <div className="percentage">
+                            <div className="progress">
+                              <div
+                                className="progress-bar color-1"
+                                role="progressbar"
+                                style={{ width: "80%" }}
+                                aria-valuenow="80"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                              ></div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="table-row">
-                      <div className="serial">02</div>
-                      <div className="country">
-                        {" "}
-                        <img src="assets/img/elements/f2.jpg" alt="flag" />
-                        Canada
-                      </div>
-                      <div className="visit">645032</div>
-                      <div className="percentage">
-                        <div className="progress">
-                          <div
-                            className="progress-bar color-2"
-                            role="progressbar"
-                            style={{ width: "30%" }}
-                            aria-valuenow="30"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="table-row">
-                      <div className="serial">03</div>
-                      <div className="country">
-                        {" "}
-                        <img src="assets/img/elements/f3.jpg" alt="flag" />
-                        Canada
-                      </div>
-                      <div className="visit">645032</div>
-                      <div className="percentage">
-                        <div className="progress">
-                          <div
-                            className="progress-bar color-3"
-                            role="progressbar"
-                            style={{ width: "55%" }}
-                            aria-valuenow="55"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="table-row">
-                      <div className="serial">08</div>
-                      <div className="country">
-                        {" "}
-                        <img src="assets/img/elements/f8.jpg" alt="flag" />
-                        Canada
-                      </div>
-                      <div className="visit">645032</div>
-                      <div className="percentage">
-                        <div className="progress">
-                          <div
-                            className="progress-bar color-8"
-                            role="progressbar"
-                            style={{ width: "60%" }}
-                            aria-valuenow="60"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
