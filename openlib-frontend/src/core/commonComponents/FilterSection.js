@@ -55,8 +55,8 @@ function FilterSection() {
                 <div className="col-xl-8 col-lg-9">
                   {/* <!-- Hero Caption --> */}
                   <div className="hero__caption">
-                    <h1>Find your dream book.</h1>
-                    <p>Filter your books by category.</p>
+                    <h1>Find your book.</h1>
+                    <p>Write some initial values you remember and hit Search</p>
                   </div>
                 </div>
                 <div className="col-xl-11 col-lg-12">
@@ -86,22 +86,25 @@ function FilterSection() {
                         <i className="fa fa-check-circle"></i>
                       </div>
                     </div>
-                    <div className="select-form">
-                      <div className="select-itms">
-                        <select
-                          name="subject"
-                          id="subject"
-                          onChange={handleChange("subject")}
-                        >
-                          <option value="">All books</option>
-                          {books.map((data) => (
-                            <option value={data.subject}>{data.subject}</option>
-                          ))}
-                        </select>
-                      </div>
+
+                    <div className="input-form2">
+                      <select
+                        name="subject"
+                        id="subject"
+                        onChange={handleChange("subject")}
+                        className="nice-select"
+                      >
+                        <option value="">All books</option>
+                        {books.map((data, index) => (
+                          <option key={index} value={data.subject}>
+                            {data.subject}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="search-form">
                       <a
+                        href="#toSearchResults"
                         onClick={(event) => onSubmitHnadle(event)}
                         className="genric-btn info input-form"
                       >
@@ -111,7 +114,7 @@ function FilterSection() {
                   </form>
                 </div>
                 <div className="col-lg-12">
-                  <div className="popular-search text-center pt-30">
+                  <div className="popular-search text-center ">
                     <ul>
                       <li>
                         <p>Popular search:</p>
@@ -140,45 +143,47 @@ function FilterSection() {
         </div>
         {/* <!--Hero Area End--> */}
         {/* <!--? Brand Area Start  */}
-        <div className="brand-area">
+        <div
+          className="brand-area"
+          id="toSearchResults"
+          style={{ marginTop: "-200px" }}
+        >
           <div className="container">
-            <div className="section-top-border">
-              <h3 className="mb-30">Search result...</h3>
-              <div className="progress-table-wrap">
-                <div className="progress-table">
-                  <div className="table-head">
-                    <div className="serial">#</div>
-                    <div className="country">Book Title</div>
-                    <div className="country">Author</div>
-                    <div className="visit">Likes</div>
-                    <div className="visit">Download</div>
-                  </div>
-                  {/* SINGLE ROW OF RESULT */}
-                  {books.map((books, index) => {
-                    return (
-                      <div className="table-row" key={index}>
-                        <div className="serial">{index + 1}</div>
-                        <div className="country">{books.title}</div>
-                        <div className="country">{books.author}</div>
-                        <div className="visit">
-                          {getNumberOfLikes(books.like)}
-                        </div>
-                        <div className="country">
-                          <a
-                            href={books.file}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black-50"
-                          >
-                            <div className="icon">
-                              <i className="fa fa-download"></i>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
+            <h3 className="mb-30 text-white">Search results...</h3>
+            <div className="progress-table-wrap">
+              <div className="progress-table">
+                <div className="table-head shadow-sm">
+                  <div className="serial">#</div>
+                  <div className="country">Book Title</div>
+                  <div className="country">Author</div>
+                  <div className="visit">Likes</div>
+                  <div className="visit">Download</div>
                 </div>
+                {/* SINGLE ROW OF RESULT */}
+                {books.map((books, index) => {
+                  return (
+                    <div className="table-row" key={index}>
+                      <div className="serial">{index + 1}</div>
+                      <div className="country">{books.title}</div>
+                      <div className="country">{books.author}</div>
+                      <div className="visit">
+                        {getNumberOfLikes(books.like)}
+                      </div>
+                      <div className="country">
+                        <a
+                          href={books.file}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-black-50"
+                        >
+                          <div className="icon">
+                            <i className="fa fa-download"></i>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

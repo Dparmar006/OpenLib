@@ -12,8 +12,12 @@ export default function Navbar() {
                 {/* <!-- Logo --> */}
                 <div className="col-xl-2 col-lg-2">
                   <div className="logo">
-                    <a href="index.html">
-                      <h1>OpenLibrary</h1>
+                    <a href="/">
+                      <div className="typography">
+                        <h1 style={{ color: "white", fontWeight: "bold" }}>
+                          OpenLib
+                        </h1>
+                      </div>
                     </a>
                   </div>
                 </div>
@@ -24,10 +28,10 @@ export default function Navbar() {
                       <nav>
                         <ul id="navigation">
                           <li>
-                            <a href="index.html">Home</a>
+                            <a href="/">Home</a>
                           </li>
                           <li>
-                            <a href="about.html">About Us</a>
+                            <a href="about.html">My Profile</a>
                           </li>
                           <li>
                             <a href="contactus.html">Contact Us</a>
