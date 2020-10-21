@@ -89,12 +89,21 @@ export default function Home() {
                         <select
                           name="subject"
                           id="subject"
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            borderRadius: "0px",
+                          }}
                           onChange={handleChange("subject")}
                           className="nice-select"
                         >
                           <option value="">All books</option>
                           {books.map((data, index) => (
-                            <option key={index} value={data.subject}>
+                            <option
+                              key={index}
+                              value={data.subject}
+                              className="list-group-item"
+                            >
                               {data.subject}
                             </option>
                           ))}
@@ -187,25 +196,27 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="row no-gutters">
-          <CategoryCard
-            title="Engineering"
-            description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
-            buttonText="Browse Books"
-            image="assets/img/icon/services1.svg"
-          />
-          <CategoryCard
-            title="Medical"
-            description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
-            buttonText="Browse Books"
-            image="assets/img/icon/services2.svg"
-          />
-          <CategoryCard
-            title="Philosophy"
-            description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
-            buttonText="Browse Books"
-            image="assets/img/icon/services3.svg"
-          />
+        <div className="container mt-50">
+          <div className="row no-gutters">
+            <CategoryCard
+              title="Engineering"
+              description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
+              buttonText="Browse Books"
+              image="assets/img/icon/services1.svg"
+            />
+            <CategoryCard
+              title="Medical"
+              description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
+              buttonText="Browse Books"
+              image="assets/img/icon/services2.svg"
+            />
+            <CategoryCard
+              title="Philosophy"
+              description="Irure sint non ad exercitation duis cupidatat pariatur aliqua."
+              buttonText="Browse Books"
+              image="assets/img/icon/services3.svg"
+            />
+          </div>
         </div>
 
         <section className="our-services section-padding40">
@@ -283,9 +294,9 @@ export default function Home() {
                     Apply Now
                   </a>
                 </div>
-                <div className="stickers">
+                {/* <div className="stickers">
                   <span>Remote</span>
-                </div>
+                </div> */}
               </div>
               {/* <!-- Single  */}
               <div className="single-top-jobs">
@@ -304,9 +315,9 @@ export default function Home() {
                     Apply Now
                   </a>
                 </div>
-                <div className="stickers">
+                {/* <div className="stickers">
                   <span>Remote</span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

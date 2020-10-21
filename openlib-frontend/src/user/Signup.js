@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { signUp } from "../auth/helper";
 import Base from "../core/commonComponents/Base";
+
+// NOTE: firstName -> first_name, lastName -> last_name, because django Abstract user model
+
 function Signup() {
   const [userInfo, setUserInfo] = useState({
     first_name: "",
