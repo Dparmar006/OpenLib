@@ -45,7 +45,7 @@ export default function Navbar() {
                     </div>
                     {/* <!-- Header-btn --> */}
                     <div className="header-right-btn d-none d-lg-block ml-65">
-                      <a href="register.html" className="border-btn">
+                      <a href="/signup" className="border-btn">
                         Sign Up
                       </a>
                     </div>

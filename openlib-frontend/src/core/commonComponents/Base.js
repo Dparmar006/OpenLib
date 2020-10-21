@@ -1,9 +1,14 @@
 import React from "react";
-import CategoryCard from "./CategoryCard";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
-const Base = ({ className = "our-services", children }) => {
+const Base = ({
+  className = "our-services",
+  children,
+  pageTitle = "Welcome to OpenLib",
+  showDefaultHeroSection = "true",
+  pageDescription = "Find your dream book !",
+}) => {
   return (
     <div>
       <div>
@@ -19,7 +24,27 @@ const Base = ({ className = "our-services", children }) => {
         </div>
       </div>
       <Navbar />
+      {showDefaultHeroSection === "true" ? (
+        <div className="slider-area2">
+          <div className="single-slider slider-height3 d-flex align-items-center">
+            <div className="container">
+              <div className="row">
+                <div className="col-xl-8 col-lg-9">
+                  <div className="hero__caption hero__caption2">
+                    <h1>{pageTitle}</h1>
+                    <p>{pageDescription}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      {/* <div className="container mt-10"> TODO: Add container around children*/}
       <div className={className}>{children}</div>
+      {/* </div> */}
       <Footer />
     </div>
   );

@@ -52,13 +52,6 @@ function FilterSection() {
           <div className="single-slider slider-height d-flex align-items-center">
             <div className="container">
               <div className="row justify-content-center">
-                <div className="col-xl-8 col-lg-9">
-                  {/* <!-- Hero Caption --> */}
-                  <div className="hero__caption">
-                    <h1>Find your book.</h1>
-                    <p>Write some initial values you remember and hit Search</p>
-                  </div>
-                </div>
                 <div className="col-xl-11 col-lg-12">
                   {/* <!--Hero form --> */}
                   <form action="#" className="search-box">

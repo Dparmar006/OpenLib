@@ -1,267 +1,233 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { signUp } from "../auth/helper";
+import Base from "../core/commonComponents/Base";
 function Signup() {
-  return (
-    <div className="row">
-      <div className="col-lg-8 col-md-8">
-        <h3 className="mb-30">Form Element</h3>
-        <form action="#">
-          <div className="mt-10">
-            <input
-              type="text"
-              name="first_name"
-              placeholder="First Name"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'First Name'"
-              required
-              className="single-input"
-            />
-          </div>
-          <div className="mt-10">
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Last Name"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Last Name'"
-              required
-              className="single-input"
-            />
-          </div>
-          <div className="mt-10">
-            <input
-              type="text"
-              name="last_name"
-              placeholder="Last Name"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Last Name'"
-              required
-              className="single-input"
-            />
-          </div>
-          <div className="mt-10">
-            <input
-              type="email"
-              name="EMAIL"
-              placeholder="Email address"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Email address'"
-              required
-              className="single-input"
-            />
-          </div>
-          <div className="input-group-icon mt-10">
-            <div className="icon">
-              <i className="fa fa-thumb-tack" aria-hidden="true"></i>
-            </div>
-            <input
-              type="text"
-              name="address"
-              placeholder="Address"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Address'"
-              required
-              className="single-input"
-            />
-          </div>
-          <div className="input-group-icon mt-10">
-            <div className="icon">
-              <i className="fa fa-plane" aria-hidden="true"></i>
-            </div>
-            <div className="form-select" id="default-select">
-              <select>
-                <option value=" 1">City</option>
-                <option value="1">Dhaka</option>
-                <option value="1">Dilli</option>
-                <option value="1">Newyork</option>
-                <option value="1">Islamabad</option>
-              </select>
-            </div>
-          </div>
-          <div className="input-group-icon mt-10">
-            <div className="icon">
-              <i className="fa fa-globe" aria-hidden="true"></i>
-            </div>
-            <div className="form-select" id="default-select">
-              <select>
-                <option value=" 1">Country</option>
-                <option value="1">Bangladesh</option>
-                <option value="1">India</option>
-                <option value="1">England</option>
-                <option value="1">Srilanka</option>
-              </select>
-            </div>
-          </div>
+  const [userInfo, setUserInfo] = useState({
+    first_name: "",
+    last_name: "",
+    phone: "",
+    email: "",
+    gender: "",
+    password: "",
+    confirmPassword: "",
+    error: "",
+    success: false,
+  });
 
-          <div className="mt-10">
-            <textarea
-              className="single-textarea"
-              placeholder="Message"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Message'"
-              required
-            ></textarea>
+  useEffect(() => {
+    setUserInfo(userInfo);
+  });
+  const {
+    first_name,
+    last_name,
+    phone,
+    email,
+    gender,
+    password,
+    confirmPassword,
+    error,
+    success,
+  } = userInfo;
+
+  const handleChange = (name) => (event) => {
+    setUserInfo({ ...userInfo, [name]: event.target.value });
+    console.log(userInfo);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    setUserInfo({ ...userInfo, error: false });
+    signUp({
+      first_name,
+      last_name,
+      phone,
+      email,
+      gender,
+      password,
+      confirmPassword,
+    })
+      .then((data) => {
+        if (data.email == email) {
+          setUserInfo({
+            ...userInfo,
+            first_name: "",
+            last_name: "",
+            phone: "",
+            email: "",
+            gender: "",
+            password: "",
+            confirmPassword: "",
+
+            error: "",
+            success: true,
+          });
+        } else {
+          setUserInfo({
+            ...userInfo,
+            error: true,
+            success: false,
+          });
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const successMessage = () => {
+    return (
+      <div>
+        <div style={{ display: success ? "block" : "none" }}>
+          <p>
+            Account created successfully,
+            <Link to="/signin" className="genric-btn link m-2">
+              click here to SignIn
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
+  };
+  const errorMessage = () => {
+    return (
+      <div>
+        <div className="container mt-5">
+          <div className="col-lg-6">
+            <blockquote className="generic-blockquote">
+              <div style={{ display: error ? "block" : "none" }}>
+                <p>
+                  Account already exist,
+                  <Link to="/signin" className="genric-btn link m-2">
+                    click here to SignIn
+                  </Link>
+                </p>
+              </div>
+            </blockquote>
           </div>
-          <div className="mt-10">
-            <input
-              type="text"
-              name="first_name"
-              placeholder="Primary color"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Primary color'"
-              required
-              className="single-input-primary"
-            />
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <Base pageTitle="Sign Up" pageDescription="Enter your details with email">
+      {/* TODO: remove the quoteblock error message blank */}
+      {successMessage()}
+      {errorMessage()}
+      <div className="container m-10">
+        <form action="">
+          <div className="row">
+            <div className="col-lg-3 col-md-4 mt-sm-30">
+              <div className="mt-10">
+                <input
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  value={first_name}
+                  onChange={handleChange("first_name")}
+                  required
+                  className="single-input"
+                />
+              </div>
+              <div className="mt-10">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                  className="single-input"
+                  value={email}
+                  onChange={handleChange("email")}
+                />
+              </div>
+              <div className="mt-10">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className="single-input"
+                  required
+                  value={password}
+                  onChange={handleChange("password")}
+                />
+              </div>
+              <div className="single-element-widget mt-30">
+                <h3 className="mb-30">Gender</h3>
+                <div className="default-select" id="default-select">
+                  <select
+                    className="nice-select"
+                    onChange={handleChange("gender")}
+                    value={gender}
+                  >
+                    <option value="">Prefer not to say</option>
+                    <option value="Other">Other</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-3 col-md-4 mt-sm-30">
+              <div className="single-element-widget">
+                <div className="mt-10">
+                  <input
+                    type="text"
+                    name="last_name"
+                    placeholder="Last Name"
+                    required
+                    className="single-input"
+                    onChange={handleChange("last_name")}
+                    value={last_name}
+                  />
+                </div>
+                <div className="mt-10">
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone number (Optional)"
+                    className="single-input"
+                    onChange={handleChange("phone")}
+                    value={phone}
+                  />
+                </div>
+                <div className="mt-10">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    className="single-input"
+                    required
+                    onChange={handleChange("confirmPassword")}
+                    value={confirmPassword}
+                  />
+                </div>
+                <div className="single-element-widget mt-30">
+                  <h3 className="mb-30">I am a...</h3>
+                  <div className="default-select" id="default-select">
+                    <select className="nice-select">
+                      <option value="student" selected>
+                        Student
+                      </option>
+                      <option value="teacher">Teacher</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="mt-10">
-            <input
-              type="text"
-              name="first_name"
-              placeholder="Accent color"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Accent color'"
-              required
-              className="single-input-accent"
-            />
-          </div>
-          <div className="mt-10">
-            <input
-              type="text"
-              name="first_name"
-              placeholder="Secondary color"
-              onfocus="this.placeholder = ''"
-              onblur="this.placeholder = 'Secondary color'"
-              required
-              className="single-input-secondary"
-            />
+          {/* button */}
+          <div className="mt-5">
+            <button
+              href="#"
+              className="genric-btn info radius"
+              onClick={handleSubmit}
+            >
+              Signup
+            </button>
           </div>
         </form>
       </div>
-      <div className="col-lg-3 col-md-4 mt-sm-30">
-        <div className="single-element-widget">
-          <h3 className="mb-30">Switches</h3>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>01. Sample Switch</p>
-            <div className="primary-switch">
-              <input type="checkbox" id="default-switch" />
-              <label for="default-switch"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>02. Primary Color Switch</p>
-            <div className="primary-switch">
-              <input type="checkbox" id="primary-switch" checked />
-              <label for="primary-switch"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>03. Confirm Color Switch</p>
-            <div className="confirm-switch">
-              <input type="checkbox" id="confirm-switch" checked />
-              <label for="confirm-switch"></label>
-            </div>
-          </div>
-        </div>
-        <div className="single-element-widget mt-30">
-          <h3 className="mb-30">Selectboxes</h3>
-          <div className="default-select" id="default-select">
-            <select>
-              <option value=" 1">English</option>
-              <option value="1">Spanish</option>
-              <option value="1">Arabic</option>
-              <option value="1">Portuguise</option>
-              <option value="1">Bengali</option>
-            </select>
-          </div>
-        </div>
-        <div className="single-element-widget mt-30">
-          <h3 className="mb-30">Checkboxes</h3>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>01. Sample Checkbox</p>
-            <div className="primary-checkbox">
-              <input type="checkbox" id="default-checkbox" />
-              <label for="default-checkbox"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>02. Primary Color Checkbox</p>
-            <div className="primary-checkbox">
-              <input type="checkbox" id="primary-checkbox" checked />
-              <label for="primary-checkbox"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>03. Confirm Color Checkbox</p>
-            <div className="confirm-checkbox">
-              <input type="checkbox" id="confirm-checkbox" />
-              <label for="confirm-checkbox"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>04. Disabled Checkbox</p>
-            <div className="disabled-checkbox">
-              <input type="checkbox" id="disabled-checkbox" disabled />
-              <label for="disabled-checkbox"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>05. Disabled Checkbox active</p>
-            <div className="disabled-checkbox">
-              <input
-                type="checkbox"
-                id="disabled-checkbox-active"
-                checked
-                disabled
-              />
-              <label for="disabled-checkbox-active"></label>
-            </div>
-          </div>
-        </div>
-        <div className="single-element-widget mt-30">
-          <h3 className="mb-30">Radios</h3>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>01. Sample radio</p>
-            <div className="primary-radio">
-              <input type="checkbox" id="default-radio" />
-              <label for="default-radio"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>02. Primary Color radio</p>
-            <div className="primary-radio">
-              <input type="checkbox" id="primary-radio" checked />
-              <label for="primary-radio"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>03. Confirm Color radio</p>
-            <div className="confirm-radio">
-              <input type="checkbox" id="confirm-radio" checked />
-              <label for="confirm-radio"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>04. Disabled radio</p>
-            <div className="disabled-radio">
-              <input type="checkbox" id="disabled-radio" disabled />
-              <label for="disabled-radio"></label>
-            </div>
-          </div>
-          <div className="switch-wrap d-flex justify-content-between">
-            <p>05. Disabled radio active</p>
-            <div className="disabled-radio">
-              <input
-                type="checkbox"
-                id="disabled-radio-active"
-                checked
-                disabled
-              />
-              <label for="disabled-radio-active"></label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </Base>
   );
 }
 
