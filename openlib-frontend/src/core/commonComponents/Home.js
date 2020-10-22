@@ -112,7 +112,7 @@ export default function Home() {
                       <div className="search-form">
                         <a
                           href="#toSearchResults"
-                          onClick={(event) => onSubmitHnadle(event)}
+                          //onClick={(event) => onSubmitHnadle(event)}
                           className="genric-btn info input-form"
                         >
                           <i className="fas fa-search"></i> Search

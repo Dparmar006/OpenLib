@@ -11,6 +11,7 @@ from .models import CustomUser, Books
 from .serializers import UserSerializer, BooksSerializer
 
 import re
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
 # NOTE: USER OPERATIONS ["VALIDATE_USER_SESSION", "GENERATE_SESSION_TOKEN", "SIGNIN", "SIGNOUT", "USER_VIEW_SETS"]
@@ -116,7 +117,13 @@ def addBook(request, id, token):
     if not validateUserSession(id, token):
         return JsonResponse({'error': 'Unexpected logout, Please re-login'})
 
-    if request.method == "POST":
+    if request.method == "POST" and request.FILES['bookFile']:
+        # files
+        bookFile = request.FILES['bookFile']
+        fs = FileSystemStorage()
+        fileName = fs.save(bookFile.name, bookFile)
+        uploaded_file_url = fs.url(fileName)
+
         bookTitle = request.POST.get('title')
         print(bookTitle, "hey")
         bookDescription = request.POST.get('description')
@@ -131,9 +138,9 @@ def addBook(request, id, token):
             return JsonResponse({'error': 'User does not exist'})
 
         qry = Books.objects.create(title=bookTitle, description=bookDescription,
-                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, user=user)
+                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=uploaded_file_url)
         qry.save()
-        return JsonResponse({'success': 'True', 'error': 'False', 'msg': f'{bookTitle} added successfully', 'code': '201'})
+        return JsonResponse({'success': 'true', 'error': 'false', 'msg': f'{bookTitle} added successfully', 'code': '201'})
 
 
 @csrf_exempt

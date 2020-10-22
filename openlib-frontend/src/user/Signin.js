@@ -9,8 +9,8 @@ import Base from "../core/commonComponents/Base";
 
 const Signin = () => {
   const [userInfo, setUserInfo] = useState({
-    email: "Dixit@gmail.com",
-    password: "hello123",
+    email: "",
+    password: "",
 
     error: "",
     success: false,
@@ -139,6 +139,7 @@ const Signin = () => {
           <div className="mt-5">
             <button
               href="#"
+              type="submit"
               className="genric-btn info radius"
               onClick={handleSubmit}
             >

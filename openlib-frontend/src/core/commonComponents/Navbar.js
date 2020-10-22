@@ -44,6 +44,16 @@ const Navbar = ({ history, path }) => {
                               </a>
                             </li>
                           )}
+                          {checkAuthenticationToken() && (
+                            <li>
+                              <a
+                                href="/uploadBook"
+                                style={currentTab(history, "/uploadBook")}
+                              >
+                                Upload Book
+                              </a>
+                            </li>
+                          )}
 
                           {!checkAuthenticationToken() && (
                             <li>
