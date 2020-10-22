@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import {
   checkAuthenticationToken,
@@ -7,10 +7,10 @@ import {
 } from "../auth/helper";
 import Base from "../core/commonComponents/Base";
 
-function Signin() {
+const Signin = () => {
   const [userInfo, setUserInfo] = useState({
-    email: "",
-    password: "",
+    email: "Dixit@gmail.com",
+    password: "hello123",
 
     error: "",
     success: false,
@@ -69,6 +69,7 @@ function Signin() {
       loading: true,
     });
 
+    console.log(userInfo, "in signin call");
     signIn({ email, password })
       .then((data) => {
         if (data.token) {
@@ -81,17 +82,18 @@ function Signin() {
         } else {
           setUserInfo({
             ...userInfo,
+
             loading: false,
           });
         }
       })
       .catch((error) => console.log(error));
   };
-
+  //TODO:can check if backendToken === frontendToken
+  //FIXME: after signing up, page not loading immediately
   const perfomRedirect = () => {
     if (checkAuthenticationToken()) {
       return <Redirect to="/" />;
-      //TODO: can check if backendToken === frontendToken
     }
   };
 
@@ -100,7 +102,7 @@ function Signin() {
       {/* TODO: remove the quoteblock error message blank */}
       {successMessage()}
       {errorMessage()}
-      {perfomRedirect()}
+
       <div className="container m-10">
         <form action="">
           <div className="row">
@@ -145,8 +147,9 @@ function Signin() {
           </div>
         </form>
       </div>
+      {perfomRedirect()}
     </Base>
   );
-}
+};
 
 export default Signin;

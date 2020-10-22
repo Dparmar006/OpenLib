@@ -1,6 +1,16 @@
 import React from "react";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import { checkAuthenticationToken, signOut } from "../../auth/helper";
 
-export default function Navbar() {
+const currentTab = (history, path) => {
+  if (history.location.pathname === path) {
+    return { textDecoration: "underline" };
+  } else {
+    return { "": "" };
+  }
+};
+
+const Navbar = ({ history, path }) => {
   return (
     <header>
       {/* <!-- Header Start --> */}
@@ -27,33 +37,51 @@ export default function Navbar() {
                     <div className="main-menu d-none d-lg-block">
                       <nav>
                         <ul id="navigation">
-                          <li>
-                            <a href="/">Home</a>
-                          </li>
-                          <li>
-                            <a href="about.html">My Profile</a>
-                          </li>
-                          <li>
-                            <a href="contactus.html">Contact Us</a>
-                          </li>
+                          {checkAuthenticationToken() && (
+                            <li>
+                              <a href="/" style={currentTab(history, "/")}>
+                                Home
+                              </a>
+                            </li>
+                          )}
 
-                          <li>
-                            <a href="/signin">Sign in</a>
-                          </li>
+                          {!checkAuthenticationToken() && (
+                            <li>
+                              <a
+                                href="/signin"
+                                style={currentTab(history, "/signin")}
+                              >
+                                Sign In
+                              </a>
+                            </li>
+                          )}
                         </ul>
                       </nav>
                     </div>
                     {/* <!-- Header-btn --> */}
                     <div className="header-right-btn d-none d-lg-block ml-65">
-                      <a href="/signup" className="border-btn">
-                        Sign Up
-                      </a>
+                      {checkAuthenticationToken() === false ? (
+                        <a href="/signup" className="border-btn">
+                          Sign Up
+                        </a>
+                      ) : (
+                        <a
+                          onClick={() => {
+                            signOut(<Redirect to="/signin" />);
+                          }}
+                          style={currentTab(history, "/signin")}
+                          href="/signin"
+                          className="border-btn"
+                        >
+                          Sign Out
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
                 {/* <!-- Mobile Menu --> */}
                 <div className="col-12">
-                  <div className="mobile_menu d-block d-lg-none"></div>
+                  <div className="mobile_menu d-block d-lg-block"></div>
                 </div>
               </div>
             </div>
@@ -63,4 +91,6 @@ export default function Navbar() {
       {/* <!-- Header End --> */}
     </header>
   );
-}
+};
+
+export default withRouter(Navbar);

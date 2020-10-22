@@ -43,7 +43,7 @@ def signin(request, *args, **kwargs):
 
     username = request.POST.get('email')
     print(username)
-    password = request.POST['password']
+    password = request.POST.get('password')
 
     regex = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
 

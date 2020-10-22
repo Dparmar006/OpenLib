@@ -18,33 +18,37 @@ export const signUp = (user) => {
 // SIGNIN
 
 export const signIn = (user) => {
-  const formData = new FormData();
+  var formData = new FormData();
 
-  for (const name in user) {
-    formData.append(name, user[name]);
-    console.log(name, user[name], "Foor loop in sign in");
-  }
+  // for (const name in user) {
+  //   formData.append(name, user[name]);
+  //   console.table(formData, "form dataaa");
+  // }
+  const { email, password } = user;
+  formData.set("email", email);
+  formData.set("password", password);
 
-  for (var key of formData.keys()) {
+  for (var key of formData.values()) {
     console.log("KEY :", key);
   }
-
+  console.log(formData.getAll("email"));
   return fetch(`${API}books/login/`, {
     method: "POST",
     body: formData,
   })
     .then((response) => {
+      console.log("signin data :", console.table(response));
       return response.json();
     })
     .catch((error) => console.log(error));
 };
 
 // AKA authentication
-export const saveAuthToken = (data, nextFun) => {
+export const saveAuthToken = (data, next) => {
   if (typeof window !== undefined) {
     localStorage.setItem("ol-jwt", JSON.stringify(data));
     console.table(localStorage.getItem("ol-jwt"), ": Token saved object");
-    nextFun();
+    next();
   }
 };
 
@@ -57,5 +61,22 @@ export const checkAuthenticationToken = () => {
     return JSON.parse(localStorage.getItem("ol-jwt"));
   } else {
     return false;
+  }
+};
+
+export const signOut = (nextFun) => {
+  const userId =
+    checkAuthenticationToken() && checkAuthenticationToken().user.id;
+
+  if (typeof window !== undefined) {
+    localStorage.removeItem("ol-jwt");
+
+    return fetch(`${API}books/logout/${userId}/`, {
+      method: "POST",
+    })
+      .then((response) => {
+        nextFun();
+      })
+      .catch((error) => console.log(error));
   }
 };
