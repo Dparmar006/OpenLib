@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login, logout
 import random
 from django.views.decorators.csrf import csrf_exempt
+
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
@@ -78,6 +79,8 @@ def signin(request, *args, **kwargs):
     except UserModel.DoesNotExist:
         return JsonResponse({'error': 'Invalid email'})
 
+    return JsonResponse({'error': 'true', 'success': 'false', 'msg': 'Something went wrong'})
+
 
 @csrf_exempt
 def signout(request, id):
@@ -110,22 +113,58 @@ class UserViewSet(viewsets.ModelViewSet):
 class BooksViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
+    authentication_classes = []
+    permission_classes = []
+    # permission_classes_by_action = {'create': [AllowAny]}
+
+    # def get_permissions(self):
+    #     try:
+    #         return [permission() for permission in self.permission_classes_by_action[self.action]]
+    #     except KeyError:
+    #         return [permission() for permission in self.permission_classes]
+
+    def post(self, request, *args, **kwargs):
+        book = request.data['file']
+        bookTitle = request.data.get('title')
+        bookDescription = request.data.get('description')
+        bookAuthor = request.data.get('author')
+        bookSubject = request.data.get('subject')
+        bookEdition = request.data.get('edition')
+        bookOwner = request.data.get('uploaded_by')
+        liked_by = request.data.get('like')
+        print(request.data)
+        userModel = get_user_model()
+        try:
+            user = userModel.objects.get(pk=request.user)
+        except userModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'})
+
+        qry = Books.objects.create(title=bookTitle, description=bookDescription,
+                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=book, like=liked_by)
+        qry.save()
+        return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
 
 
 @csrf_exempt
-def addBook(request, id, token):
+def addBook(request, id, token, *args, **kwargs):
+    print("called")
+
     if not validateUserSession(id, token):
         return JsonResponse({'error': 'Unexpected logout, Please re-login'})
 
-    if request.method == "POST" and request.FILES['bookFile']:
+    if request.method == "POST":
         # files
-        bookFile = request.FILES['bookFile']
+        print("entered into files")
+        print(request.FILES)
+        bookFile = request.FILES['file']
         fs = FileSystemStorage()
         fileName = fs.save(bookFile.name, bookFile)
-        uploaded_file_url = fs.url(fileName)
+        uploaded_file_url = fs.url(bookFile)
+        uploaded_file_url = uploaded_file_url.replace("/media/", "")
+        print(uploaded_file_url)
 
-        bookTitle = request.POST.get('title')
         print(bookTitle, "hey")
+        bookTitle = request.POST.get('title')
         bookDescription = request.POST.get('description')
         bookAuthor = request.POST.get('author')
         bookSubject = request.POST.get('subject')
@@ -141,6 +180,8 @@ def addBook(request, id, token):
                                    author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=uploaded_file_url)
         qry.save()
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': f'{bookTitle} added successfully', 'code': '201'})
+    else:
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'send a valid request', 'code': '400'})
 
 
 @csrf_exempt

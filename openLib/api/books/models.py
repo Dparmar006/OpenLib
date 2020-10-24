@@ -20,7 +20,12 @@ class CustomUser(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
 
 
+def saveBookToDB(self, instance, filename):
+    return '/'.join(['bookFiles', str(instance.title)])
+
+
 class Books(models.Model):
+
     title = models.CharField(max_length=50, unique=True)
     author = models.CharField(max_length=50)
     subject = models.CharField(max_length=50)
@@ -33,7 +38,7 @@ class Books(models.Model):
     edition = models.IntegerField(null=True, blank=True, default=1)
     uploaded_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
                                     related_name='referencing_owner_of_the_book')
-    file = models.FileField(upload_to="bookFiles/", max_length=100)
+    file = models.FileField(upload_to="bookFiles", max_length=100)
 
     def __str__(self):
         return self.title

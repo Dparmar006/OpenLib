@@ -111,12 +111,28 @@ function Signup() {
       </div>
     );
   };
+  const loadingMessage = () => {
+    return (
+      <div>
+        <div className="container mt-5">
+          <div className="col-lg-6">
+            <blockquote className="generic-blockquote">
+              <div style={{ display: error ? "block" : "none" }}>
+                <p>Loading, Please wait</p>
+              </div>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <Base pageTitle="Sign Up" pageDescription="Enter your details with email">
       {/* TODO: remove the quoteblock error message blank */}
       {successMessage()}
       {errorMessage()}
+      {loadingMessage}
       <div className="container m-10">
         <form action="">
           <div className="row">

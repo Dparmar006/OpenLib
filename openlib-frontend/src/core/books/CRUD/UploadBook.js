@@ -11,7 +11,7 @@ const UploadBook = () => {
     description: "desc test",
     edition: "4",
     stream: "IT",
-    file: "",
+    file: null,
 
     error: "",
     success: "",
@@ -33,6 +33,7 @@ const UploadBook = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    console.log(bookInfo, "b4");
     uploadBookHelper({
       title,
       author,
@@ -64,11 +65,20 @@ const UploadBook = () => {
     console.table(bookInfo);
     console.log("====================================");
   };
+  const handleFileChange = (event) => {
+    setBookInfo({
+      ...bookInfo,
+      file: event.target.value || null,
+    });
+    console.log("====================================");
+    console.table(bookInfo);
+    console.log("====================================");
+  };
 
   return (
     <Base>
       <div className="container m-10">
-        <form action="">
+        <form action="" encType="multipart/form-data">
           <div className="row">
             <div className="col-lg-3 col-md-4 mt-sm-30">
               <div className="mt-10">
@@ -142,12 +152,12 @@ const UploadBook = () => {
                 <div className="mt-10">
                   <input
                     type="file"
-                    name="bookFile"
+                    name="file"
                     placeholder="Upload your book"
                     className="single-input"
                     required
-                    onChange={handleChange("file")}
-                    value={file}
+                    onChange={(event) => handleFileChange(event)}
+                    value={file || null}
                   />
                 </div>
               </div>

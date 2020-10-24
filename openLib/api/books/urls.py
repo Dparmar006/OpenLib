@@ -11,7 +11,6 @@ router.register(r'', views.BooksViewSet)
 urlpatterns = [
     path("login/", views.signin, name="login"),
     path("logout/<int:id>/", views.signout, name="logout"),
-
     path("", include(router.urls), name="see up at the 'router'"),
     path("addBook/<str:id>/<str:token>/",
          views.addBook, name="add a new book"),

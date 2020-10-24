@@ -25,20 +25,25 @@ export const uploadBookHelper = (book) => {
     checkAuthenticationToken() && checkAuthenticationToken().user.id;
   const token = checkAuthenticationToken() && checkAuthenticationToken().token;
 
-  for (const name in book) {
-    formData.append(name, book[name]);
-  }
+  const { title, author, subject, description, edition, stream, file } = book;
 
-  formData.set(
-    "bookFile",
-    "http://127.0.0.1:8000/media/bookFiles/".concat(
-      getFileNameFromPath(formData.get("file"))
-    )
-  );
+  formData.append("title", title);
+  formData.append("author", author);
+  formData.append("subject", subject);
+  formData.append("description", description);
+  formData.append("edition", edition);
+  formData.append("stream", stream);
+  formData.append("like", "");
 
-  return fetch(`${API}books/addBook/${userId}/${token}/`, {
+  const blobBook = new Blob([JSON.stringify(file)], {
+    type: "Application/Json",
+  });
+  // [JSON.stringify(obj, null, 2)
+  formData.append("file", file);
+  formData.append("uploaded_by", `${API}books/user/${userId}/`);
+  console.log(formData);
+  return fetch(`${API}books/`, {
     method: "POST",
-    headers: {},
     body: formData,
   })
     .then((response) => {
