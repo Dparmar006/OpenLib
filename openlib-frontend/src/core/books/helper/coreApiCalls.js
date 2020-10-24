@@ -27,6 +27,7 @@ export const uploadBookHelper = (book) => {
 
   const { title, author, subject, description, edition, stream, file } = book;
 
+  formData.append("id", userId);
   formData.append("title", title);
   formData.append("author", author);
   formData.append("subject", subject);
@@ -40,10 +41,11 @@ export const uploadBookHelper = (book) => {
   });
   // [JSON.stringify(obj, null, 2)
   formData.append("file", file);
-  formData.append("uploaded_by", `${API}books/user/${userId}/`);
+  formData.append("uploaded_by", userId);
   console.log(formData);
-  return fetch(`${API}books/`, {
+  return fetch(`${API}books/uploadBook/`, {
     method: "POST",
+
     body: formData,
   })
     .then((response) => {

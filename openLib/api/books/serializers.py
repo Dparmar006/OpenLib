@@ -9,7 +9,7 @@ from .models import Books
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 
-    #TODO: create and update
+    # TODO: create and update
     def create(self, validated_data):
         password = validated_data.pop('password', None)
         instance = self.Meta.model(**validated_data)
@@ -35,7 +35,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                   'gender', 'is_active', 'is_staff', 'is_superuser', 'password')
 
 
+class BooksUpdateSerializer(serializers.HyperlinkedModelSerializer):
+    def create(self, instance, validated_data):
+        print(validated_data.values())
+        pass
+
+    class Meta:
+        model = Books
+        fields = ('title', 'author', 'subject', 'description',
+                  'uploaded_at', 'like', 'edition', 'uploaded_by',  'stream', 'file')
+
+
 class BooksSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Books
         fields = ('id', 'title', 'author', 'subject', 'description',

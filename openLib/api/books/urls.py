@@ -7,6 +7,7 @@ from . import views
 router = routers.DefaultRouter()
 router.register('user', views.UserViewSet)
 router.register(r'', views.BooksViewSet)
+router.register('uploadBook/', views.BooksUpdateViewSet)
 
 urlpatterns = [
     path("login/", views.signin, name="login"),

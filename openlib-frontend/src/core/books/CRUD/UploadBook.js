@@ -68,7 +68,7 @@ const UploadBook = () => {
   const handleFileChange = (event) => {
     setBookInfo({
       ...bookInfo,
-      file: event.target.value || null,
+      file: event.target.files[0].name || null,
     });
     console.log("====================================");
     console.table(bookInfo);
@@ -157,7 +157,6 @@ const UploadBook = () => {
                     className="single-input"
                     required
                     onChange={(event) => handleFileChange(event)}
-                    value={file || null}
                   />
                 </div>
               </div>

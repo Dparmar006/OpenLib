@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
 from .models import CustomUser, Books
-from .serializers import UserSerializer, BooksSerializer
+from .serializers import UserSerializer, BooksSerializer, BooksUpdateSerializer
 
 import re
 from django.core.files.storage import FileSystemStorage
@@ -110,6 +110,34 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # NOTE: BOOK OPERATIONS ["ADD", "REMOVE", "VIEW"]
 
+class BooksUpdateViewSet(viewsets.ModelViewSet):
+    queryset = Books.objects.all()
+    serializer_class = BooksUpdateSerializer
+
+    def post(self, request, *args, **kwargs):
+        print("entered in posy")
+        book = request.data['file']
+        userid = request.data.get('id')
+        bookTitle = request.data.get('title')
+        bookDescription = request.data.get('description')
+        bookAuthor = request.data.get('author')
+        bookSubject = request.data.get('subject')
+        bookEdition = request.data.get('edition')
+        bookOwner = request.data.get('uploaded_by')
+        liked_by = request.data.get('like')
+        userModel = get_user_model()
+        print(bookAuthor)
+        try:
+            user = userModel.objects.get(pk=userid)
+        except userModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'})
+
+        # qry = Books.objects.create(title=userid, description=bookDescription,
+            #    author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=book, like=liked_by)
+        # qry.save()
+        return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
+
+
 class BooksViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
@@ -125,6 +153,7 @@ class BooksViewSet(viewsets.ModelViewSet):
 
     def post(self, request, *args, **kwargs):
         book = request.data['file']
+        userid = request.data.get('id')
         bookTitle = request.data.get('title')
         bookDescription = request.data.get('description')
         bookAuthor = request.data.get('author')
@@ -135,12 +164,13 @@ class BooksViewSet(viewsets.ModelViewSet):
         print(request.data)
         userModel = get_user_model()
         try:
-            user = userModel.objects.get(pk=request.user)
+            user = userModel.objects.get(pk=userid)
         except userModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'})
 
         qry = Books.objects.create(title=bookTitle, description=bookDescription,
-                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=book, like=liked_by)
+                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)
+
         qry.save()
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
 
@@ -155,20 +185,20 @@ def addBook(request, id, token, *args, **kwargs):
     if request.method == "POST":
         # files
         print("entered into files")
-        print(request.FILES)
-        bookFile = request.FILES['file']
-        fs = FileSystemStorage()
-        fileName = fs.save(bookFile.name, bookFile)
-        uploaded_file_url = fs.url(bookFile)
-        uploaded_file_url = uploaded_file_url.replace("/media/", "")
-        print(uploaded_file_url)
+        # print(request.FILES)
+        # bookFile = request.FILES['file']
+        # fs = FileSystemStorage()
+        # fileName = fs.save(bookFile.name, bookFile)
+        # uploaded_file_url = fs.url(bookFile)
+        # uploaded_file_url = uploaded_file_url.replace("/media/", "")
+        # print(uploaded_file_url)
 
         print(bookTitle, "hey")
-        bookTitle = request.POST.get('title')
-        bookDescription = request.POST.get('description')
-        bookAuthor = request.POST.get('author')
-        bookSubject = request.POST.get('subject')
-        bookEdition = request.POST.get('edition')
+        bookTitle = request.data.get('title')
+        bookDescription = request.data.get('description')
+        bookAuthor = request.data.get('author')
+        bookSubject = request.data.get('subject')
+        bookEdition = request.data.get('edition')
 
         userModel = get_user_model()
         try:
@@ -177,7 +207,7 @@ def addBook(request, id, token, *args, **kwargs):
             return JsonResponse({'error': 'User does not exist'})
 
         qry = Books.objects.create(title=bookTitle, description=bookDescription,
-                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=uploaded_file_url)
+                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user)
         qry.save()
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': f'{bookTitle} added successfully', 'code': '201'})
     else:
