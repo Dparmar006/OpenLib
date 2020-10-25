@@ -36,12 +36,8 @@ export const uploadBookHelper = (book) => {
   formData.append("stream", stream);
   formData.append("like", "");
 
-  const blobBook = new Blob([JSON.stringify(file)], {
-    type: "Application/Json",
-  });
-  // [JSON.stringify(obj, null, 2)
   formData.append("file", file);
-  formData.append("uploaded_by", userId);
+
   console.log(formData);
   return fetch(`${API}books/uploadBook/`, {
     method: "POST",

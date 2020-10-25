@@ -68,7 +68,7 @@ const UploadBook = () => {
   const handleFileChange = (event) => {
     setBookInfo({
       ...bookInfo,
-      file: event.target.files[0].name || null,
+      file: event.target.files[0] || null,
     });
     console.log("====================================");
     console.table(bookInfo);

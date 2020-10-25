@@ -35,10 +35,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                   'gender', 'is_active', 'is_staff', 'is_superuser', 'password')
 
 
-class BooksUpdateSerializer(serializers.HyperlinkedModelSerializer):
-    def create(self, instance, validated_data):
-        print(validated_data.values())
-        pass
+class BooksUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Books

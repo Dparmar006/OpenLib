@@ -113,10 +113,12 @@ class UserViewSet(viewsets.ModelViewSet):
 class BooksUpdateViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.all()
     serializer_class = BooksUpdateSerializer
+    authentication_classes = []
+    permission_classes = []
 
     def post(self, request, *args, **kwargs):
-        print("entered in posy")
-        book = request.data['file']
+        fileBook = request.data['file']
+        print("entered in posy", fileBook)
         userid = request.data.get('id')
         bookTitle = request.data.get('title')
         bookDescription = request.data.get('description')
@@ -132,10 +134,12 @@ class BooksUpdateViewSet(viewsets.ModelViewSet):
         except userModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'})
 
-        # qry = Books.objects.create(title=userid, description=bookDescription,
-            #    author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=book, like=liked_by)
-        # qry.save()
-        return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
+        qry = Books.objects.create(title=userid, description=bookDescription,
+                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=fileBook, like=liked_by)
+        if qry.save():
+            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
+
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'something wrong in saving data'})
 
 
 class BooksViewSet(viewsets.ModelViewSet):
@@ -159,19 +163,15 @@ class BooksViewSet(viewsets.ModelViewSet):
         bookAuthor = request.data.get('author')
         bookSubject = request.data.get('subject')
         bookEdition = request.data.get('edition')
-        bookOwner = request.data.get('uploaded_by')
-        liked_by = request.data.get('like')
-        print(request.data)
         userModel = get_user_model()
         try:
             user = userModel.objects.get(pk=userid)
         except userModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist'})
 
-        qry = Books.objects.create(title=bookTitle, description=bookDescription,
-                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)
+        Books.objects.create(title=bookTitle, description=bookDescription,
+                             author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)
 
-        qry.save()
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
 
 
