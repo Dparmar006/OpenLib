@@ -110,36 +110,36 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # NOTE: BOOK OPERATIONS ["ADD", "REMOVE", "VIEW"]
 
-class BooksUpdateViewSet(viewsets.ModelViewSet):
-    queryset = Books.objects.all()
-    serializer_class = BooksUpdateSerializer
-    authentication_classes = []
-    permission_classes = []
+# class BooksUpdateViewSet(viewsets.ModelViewSet):
+#     queryset = Books.objects.all()
+#     serializer_class = BooksUpdateSerializer
+#     authentication_classes = []
+#     permission_classes = []
 
-    def post(self, request, *args, **kwargs):
-        fileBook = request.data['file']
-        print("entered in posy", fileBook)
-        userid = request.data.get('id')
-        bookTitle = request.data.get('title')
-        bookDescription = request.data.get('description')
-        bookAuthor = request.data.get('author')
-        bookSubject = request.data.get('subject')
-        bookEdition = request.data.get('edition')
-        bookOwner = request.data.get('uploaded_by')
-        liked_by = request.data.get('like')
-        userModel = get_user_model()
-        print(bookAuthor)
-        try:
-            user = userModel.objects.get(pk=userid)
-        except userModel.DoesNotExist:
-            return JsonResponse({'error': 'User does not exist'})
+#     def post(self, request, *args, **kwargs):
+#         fileBook = request.data['file']
+#         print("entered in posy", fileBook)
+#         userid = request.data.get('id')
+#         bookTitle = request.data.get('title')
+#         bookDescription = request.data.get('description')
+#         bookAuthor = request.data.get('author')
+#         bookSubject = request.data.get('subject')
+#         bookEdition = request.data.get('edition')
+#         bookOwner = request.data.get('uploaded_by')
+#         liked_by = request.data.get('like')
+#         userModel = get_user_model()
+#         print(bookAuthor)
+#         try:
+#             user = userModel.objects.get(pk=userid)
+#         except userModel.DoesNotExist:
+#             return JsonResponse({'error': 'User does not exist'})
 
-        qry = Books.objects.create(title=userid, description=bookDescription,
-                                   author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=fileBook, like=liked_by)
-        if qry.save():
-            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
+#         qry = Books.objects.create(title=userid, description=bookDescription,
+#                                    author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=fileBook, like=liked_by)
+#         if qry.save():
+#             return JsonResponse({'success': 'true', 'error': 'false', 'msg': f'{bookTitle}book added'})
 
-        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'something wrong in saving data'})
+#         return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'something wrong in saving data'})
 
 
 class BooksViewSet(viewsets.ModelViewSet):
@@ -147,13 +147,6 @@ class BooksViewSet(viewsets.ModelViewSet):
     serializer_class = BooksSerializer
     authentication_classes = []
     permission_classes = []
-    # permission_classes_by_action = {'create': [AllowAny]}
-
-    # def get_permissions(self):
-    #     try:
-    #         return [permission() for permission in self.permission_classes_by_action[self.action]]
-    #     except KeyError:
-    #         return [permission() for permission in self.permission_classes]
 
     def post(self, request, *args, **kwargs):
         book = request.data['file']
@@ -163,15 +156,15 @@ class BooksViewSet(viewsets.ModelViewSet):
         bookAuthor = request.data.get('author')
         bookSubject = request.data.get('subject')
         bookEdition = request.data.get('edition')
+
         userModel = get_user_model()
         try:
             user = userModel.objects.get(pk=userid)
         except userModel.DoesNotExist:
-            return JsonResponse({'error': 'User does not exist'})
+            return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Authentication failed, Please re-login'})
 
         Books.objects.create(title=bookTitle, description=bookDescription,
                              author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)
-
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
 
 
