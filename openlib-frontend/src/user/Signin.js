@@ -12,7 +12,8 @@ const Signin = () => {
     email: "",
     password: "",
 
-    error: "",
+    msg: null,
+    error: false,
     success: false,
     loading: false,
     didRedirect: false,
@@ -23,7 +24,7 @@ const Signin = () => {
       <div>
         <div style={{ display: success ? "block" : "none" }}>
           <p>
-            Account created successfully,
+            {msg}
             <Link to="/signin" className="genric-btn link m-2">
               click here to SignIn
             </Link>
@@ -39,13 +40,7 @@ const Signin = () => {
           <div className="col-lg-6">
             <blockquote className="generic-blockquote">
               <div style={{ display: error ? "block" : "none" }}>
-                <p>
-                  Email and Password didn't match the user, You make create new
-                  account
-                  <Link to="/signin" className="genric-btn link m-2">
-                    from here.
-                  </Link>
-                </p>
+                <p>{msg}</p>
               </div>
             </blockquote>
           </div>
@@ -54,7 +49,15 @@ const Signin = () => {
     );
   };
 
-  const { email, password, error, success, loading, didRedirect } = userInfo;
+  const {
+    email,
+    password,
+    error,
+    success,
+    msg,
+    loading,
+    didRedirect,
+  } = userInfo;
   const handleChange = (name) => (event) => {
     setUserInfo({ ...userInfo, [name]: event.target.value });
     console.table(userInfo);
@@ -76,6 +79,7 @@ const Signin = () => {
           saveAuthToken(data, () => {
             setUserInfo({
               ...userInfo,
+              msg: data.msg,
               didRedirect: true,
               loading: true,
               success: true,
@@ -84,6 +88,7 @@ const Signin = () => {
         } else {
           setUserInfo({
             ...userInfo,
+            msg: data.msg,
             error: true,
             loading: false,
           });

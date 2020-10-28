@@ -5,14 +5,15 @@ import { uploadBookHelper, getFileNameFromPath } from "../helper/coreApiCalls";
 
 const UploadBook = () => {
   const [bookInfo, setBookInfo] = useState({
-    title: "Testbook",
-    author: "Author test",
-    subject: "Subject test",
-    description: "desc test",
-    edition: "4",
-    stream: "IT",
+    title: "",
+    author: "",
+    subject: "",
+    description: "",
+    edition: "",
+    stream: "",
     file: null,
 
+    msg: "",
     error: "",
     success: "",
   });
@@ -26,14 +27,13 @@ const UploadBook = () => {
     stream,
     file,
 
+    msg,
     error,
     success,
   } = bookInfo;
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(bookInfo, "b4");
     uploadBookHelper({
       title,
       author,
@@ -43,14 +43,23 @@ const UploadBook = () => {
       stream,
       file,
     })
-      .then((response) => {
-        if (response.error) {
-          console.log(response);
+      .then((data) => {
+        if (data.error) {
+          console.log(data);
         } else {
           setBookInfo({
             ...bookInfo,
-            success: true,
+            title: "",
+            author: "",
+            subject: "",
+            description: "",
+            edition: "",
+            stream: "",
+            file: null,
+
+            msg: data.msg,
             error: false,
+            success: true,
           });
         }
       })
@@ -61,22 +70,19 @@ const UploadBook = () => {
       ...bookInfo,
       [name]: event.target.value,
     });
-    console.log("====================================");
-    console.table(bookInfo);
-    console.log("====================================");
   };
   const handleFileChange = (event) => {
     setBookInfo({
       ...bookInfo,
       file: event.target.files[0] || null,
     });
-    console.log("====================================");
-    console.table(bookInfo);
-    console.log("====================================");
   };
 
   return (
-    <Base>
+    <Base
+      pageTitle="Fill details of your book"
+      pageDescription={msg.length > 0 ? msg : "Fill details of your book"}
+    >
       <div className="container m-10">
         <form action="" encType="multipart/form-data">
           <div className="row">

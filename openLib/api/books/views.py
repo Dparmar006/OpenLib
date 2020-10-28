@@ -79,16 +79,6 @@ def signin(request, *args, **kwargs):
     username = request.POST.get('email')
     password = request.POST.get('password')
 
-    regex = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
-
-    if(re.match(regex, str(username))):
-        print("valid Email")
-    else:
-        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Please, Enter a vaid email address'})
-
-    if len(password) < 4:
-        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Passoword is too short'})
-
     UserModel = get_user_model()
     try:
         user = UserModel.objects.get(email=username)

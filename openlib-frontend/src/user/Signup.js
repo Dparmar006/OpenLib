@@ -99,7 +99,6 @@ function Signup() {
       <div>
         <div style={{ display: error ? "block" : "none" }}>
           <p>{msg}</p>
-          <p>Please enter valid data</p>
         </div>
       </div>
     );
