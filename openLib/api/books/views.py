@@ -41,10 +41,9 @@ def test(request):
 @csrf_exempt
 def signin(request, *args, **kwargs):
     if not request.method == 'POST':
-        return JsonResponse({'error': 'Please pass a POST request'})
+        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'We acccept only post requests'})
 
     username = request.POST.get('email')
-    print(username)
     password = request.POST.get('password')
 
     regex = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
@@ -52,10 +51,10 @@ def signin(request, *args, **kwargs):
     if(re.match(regex, str(username))):
         print("valid Email")
     else:
-        return JsonResponse({'error': 'custom check : Invalid email'})
+        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Please, Enter a vaid email address'})
 
     if len(password) < 4:
-        return JsonResponse({'error': 'Passoword is too short'})
+        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Passoword is too short'})
 
     UserModel = get_user_model()
     try:
@@ -68,16 +67,16 @@ def signin(request, *args, **kwargs):
             if user.session_token != '0':
                 user.session_token = '0'
                 user.save()
-                return JsonResponse({'error': 'Session already exists'})
+                return JsonResponse({'msg': 'Session already exists'})
             token = generate_session_token()
             user.session_token = token
             user.save()
             login(request, user)
             return JsonResponse({'token': token, 'user': usr_dict})
         else:
-            return JsonResponse({'error': 'Invalid password'})
+            return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Invalid password'})
     except UserModel.DoesNotExist:
-        return JsonResponse({'error': 'Invalid email'})
+        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Invalid email'})
 
     return JsonResponse({'error': 'true', 'success': 'false', 'msg': 'Something went wrong'})
 
@@ -210,7 +209,7 @@ def addBook(request, id, token, *args, **kwargs):
 @csrf_exempt
 def removeBook(request, bookId, id, token):
     if not validateUserSession(id, token):
-        return JsonResponse({'error': 'Unexpected logout, Please re-login'})
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Authentication failed, please re-login'})
     if request.method == "POST":
         book = Books.objects.get(id=bookId)
         if book.uploaded_by == request.user:

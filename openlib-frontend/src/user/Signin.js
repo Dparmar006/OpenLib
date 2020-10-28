@@ -77,12 +77,14 @@ const Signin = () => {
             setUserInfo({
               ...userInfo,
               didRedirect: true,
+              loading: true,
+              success: true,
             });
           });
         } else {
           setUserInfo({
             ...userInfo,
-
+            error: true,
             loading: false,
           });
         }

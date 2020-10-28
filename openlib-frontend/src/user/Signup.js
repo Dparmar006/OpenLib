@@ -82,9 +82,9 @@ function Signup() {
       <div>
         <div style={{ display: success ? "block" : "none" }}>
           <p>
-            Account created successfully,
+            Account created,
             <Link to="/signin" className="genric-btn link m-2">
-              click here to SignIn
+              SignIn
             </Link>
           </p>
         </div>
@@ -94,19 +94,13 @@ function Signup() {
   const errorMessage = () => {
     return (
       <div>
-        <div className="container mt-5">
-          <div className="col-lg-6">
-            <blockquote className="generic-blockquote">
-              <div style={{ display: error ? "block" : "none" }}>
-                <p>
-                  Account already exist,
-                  <Link to="/signin" className="genric-btn link m-2">
-                    click here to SignIn
-                  </Link>
-                </p>
-              </div>
-            </blockquote>
-          </div>
+        <div style={{ display: error ? "block" : "none" }}>
+          <p>
+            Account already exist,
+            <Link to="/signin" className="genric-btn link m-2">
+              click here to SignIn
+            </Link>
+          </p>
         </div>
       </div>
     );
@@ -114,14 +108,8 @@ function Signup() {
   const loadingMessage = () => {
     return (
       <div>
-        <div className="container mt-5">
-          <div className="col-lg-6">
-            <blockquote className="generic-blockquote">
-              <div style={{ display: error ? "block" : "none" }}>
-                <p>Loading, Please wait</p>
-              </div>
-            </blockquote>
-          </div>
+        <div style={{ display: error ? "block" : "none" }}>
+          <p>Loading, Please wait</p>
         </div>
       </div>
     );
@@ -130,9 +118,15 @@ function Signup() {
   return (
     <Base pageTitle="Sign Up" pageDescription="Enter your details with email">
       {/* TODO: remove the quoteblock error message blank */}
-      {successMessage()}
-      {errorMessage()}
-      {loadingMessage}
+      <div className="container mt-5">
+        <div className="col-lg-6">
+          <blockquote className="generic-blockquote">
+            {successMessage()}
+            {errorMessage()}
+            {loadingMessage()}
+          </blockquote>
+        </div>
+      </div>
       <div className="container m-10">
         <form action="">
           <div className="row">

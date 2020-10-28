@@ -50,3 +50,19 @@ export const uploadBookHelper = (book) => {
     })
     .catch((error) => console.log(error));
 };
+
+// DeleteBook
+export const deleteBookHelper = (bookId) => {
+  const userId =
+    checkAuthenticationToken() && checkAuthenticationToken().user.id;
+  const token = checkAuthenticationToken() && checkAuthenticationToken().token;
+
+  fetch(`${API}books/${parseInt(bookId)}/${userId}/${token}/removeBook/`, {
+    method: "POST",
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
