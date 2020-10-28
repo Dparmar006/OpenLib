@@ -39,6 +39,39 @@ def test(request):
 
 
 @csrf_exempt
+def signup(request, *args, **kwargs):
+    if not request.method == 'POST':
+        return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'We acccept only post requests'})
+
+    username = request.POST.get('email')
+    phone = request.POST.get('phone')
+    password = request.POST.get('password')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+
+    regex = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
+
+    if(re.match(regex, str(username))):
+        print("valid Email")
+    else:
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please, Enter a vaid email address'})
+
+    if len(password) < 4:
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Passoword is too short'})
+
+    userModel = get_user_model()
+    try:
+        userExist = userModel.objects.get(email=username)
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Account with this email already exist '})
+    except:
+        qry = CustomUser.objects.create(
+            email=username, password=password, phone=phone, first_name=first_name, last_name=last_name)
+        if qry:
+            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'Account created !'})
+    return JsonResponse({'error': 'true', 'success': 'false', 'msg': 'Something went wrong'})
+
+
+@csrf_exempt
 def signin(request, *args, **kwargs):
     if not request.method == 'POST':
         return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'We acccept only post requests'})

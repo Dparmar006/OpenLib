@@ -14,8 +14,9 @@ function Signup() {
     gender: "",
     password: "",
     confirmPassword: "",
-    error: "",
+    error: false,
     success: false,
+    msg: null,
   });
 
   useEffect(() => {
@@ -31,6 +32,7 @@ function Signup() {
     confirmPassword,
     error,
     success,
+    msg,
   } = userInfo;
 
   const handleChange = (name) => (event) => {
@@ -62,15 +64,16 @@ function Signup() {
             gender: "",
             password: "",
             confirmPassword: "",
-
-            error: "",
+            error: false,
             success: true,
+            msg: data.msg,
           });
         } else {
           setUserInfo({
             ...userInfo,
             error: true,
             success: false,
+            msg: data.msg,
           });
         }
       })
@@ -82,7 +85,7 @@ function Signup() {
       <div>
         <div style={{ display: success ? "block" : "none" }}>
           <p>
-            Account created,
+            {msg}
             <Link to="/signin" className="genric-btn link m-2">
               SignIn
             </Link>
@@ -95,12 +98,8 @@ function Signup() {
     return (
       <div>
         <div style={{ display: error ? "block" : "none" }}>
-          <p>
-            Account already exist,
-            <Link to="/signin" className="genric-btn link m-2">
-              click here to SignIn
-            </Link>
-          </p>
+          <p>{msg}</p>
+          <p>Please enter valid data</p>
         </div>
       </div>
     );
@@ -123,7 +122,7 @@ function Signup() {
           <blockquote className="generic-blockquote">
             {successMessage()}
             {errorMessage()}
-            {loadingMessage()}
+            {/* {loadingMessage()} */}
           </blockquote>
         </div>
       </div>
@@ -195,7 +194,8 @@ function Signup() {
                 </div>
                 <div className="mt-10">
                   <input
-                    type="tel"
+                    type="text"
+                    pattern="[0-9]*"
                     name="phone"
                     placeholder="Phone number (Optional)"
                     className="single-input"

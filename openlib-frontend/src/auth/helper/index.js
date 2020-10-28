@@ -1,13 +1,15 @@
 const { API } = require("../../backend");
 
 export const signUp = (user) => {
-  return fetch(`${API}books/user/`, {
+  var formData = new FormData();
+
+  for (const name in user) {
+    formData.append(name, user[name]);
+    console.log(name, user[name], "form dataaa");
+  }
+  return fetch(`${API}books/user/createUser/`, {
     method: "POST",
-    headers: {
-      Accept: "Application/json",
-      "Content-Type": "Application/json",
-    },
-    body: JSON.stringify(user),
+    body: formData,
   })
     .then((response) => {
       return response.json();
