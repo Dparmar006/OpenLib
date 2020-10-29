@@ -2,6 +2,9 @@
 ## Making a openlibrary website powered by React and django.
 
 ### Key features
-- You can Upload and search pdf books from others, I have I will implement rating feature so filtering out the best book becomes convenient. 
+- You can search pdf books, study materials (in various formats such as .docx, .ppt, ect
+) uploaded by others, I will implement likin feature so filtering out the best book becomes convenient. 
 - I will intigrate open source APIs in this website.
-- You can upload any type of document here, It'll be helpful for students.
+- It'll be helpful for students and teachers to share and distribute class homework and materials.
+
+ 
