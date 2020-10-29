@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getAllBooks, getNumberOfLikes } from "../books/helper/coreApiCalls";
 
 import Base from "./Base";
@@ -48,108 +49,112 @@ export default function Home() {
   const handleChange = (name) => (event) => {
     setFilter({ ...filter, [name]: event.target.value });
   };
-  return (
-    <div>
-      <Base showDefaultHeroSection="false">
-        <div>
-          {/* <!-- Hero Area Start--> */}
-          <div className="slider-area">
-            <div className="single-slider slider-height d-flex align-items-center">
-              <div className="container">
-                <div className="row justify-content-center">
-                  <div className="col-xl-11 col-lg-12">
-                    {/* <!--Hero form --> */}
-                    <form action="#" className="search-box">
-                      <div className="input-form">
-                        <input
-                          type="text"
-                          name="title"
-                          placeholder="Title is..."
-                          onChange={handleChange("title")}
-                        />
-                        {/* <!-- icon --> */}
-                        <div className="icon">
-                          <i className="fa fa-book"></i>
-                        </div>
-                      </div>
-                      <div className="input-form2">
-                        <input
-                          type="text"
-                          name="topics"
-                          placeholder="Topics"
-                          onChange={handleChange("description")}
-                        />
-                        {/* <!-- icon --> */}
-                        <div className="icon">
-                          <i className="fa fa-check-circle"></i>
-                        </div>
-                      </div>
 
-                      <div className="input-form2">
-                        <select
-                          name="subject"
-                          id="subject"
-                          style={{
-                            height: "100%",
-                            width: "100%",
-                            borderRadius: "0px",
-                          }}
-                          onChange={handleChange("subject")}
-                          className="nice-select"
-                        >
-                          <option value="">All books</option>
-                          {books.map((data, index) => (
-                            <option
-                              key={index}
-                              value={data.subject}
-                              className="list-group-item"
-                            >
-                              {data.subject}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="search-form">
-                        <a
-                          href="#toSearchResults"
-                          //onClick={(event) => onSubmitHnadle(event)}
-                          className="genric-btn info input-form"
-                        >
-                          <i className="fas fa-search"></i> Search
-                        </a>
-                      </div>
-                    </form>
-                  </div>
-                  <div className="col-lg-12">
-                    <div className="popular-search text-center ">
-                      <ul>
-                        <li>
-                          <p>Popular search:</p>
-                        </li>
-                        <li>
-                          <a href="#">#User experience designer</a>
-                        </li>
-                        <li>
-                          <a href="#">#Marketing</a>
-                        </li>
-                        <li>
-                          <a href="#">#Programmer</a>
-                        </li>
-                        <li>
-                          <a href="#">#Finance</a>
-                        </li>
-                        <li>
-                          <a href="#">#UI designer</a>
-                        </li>
-                      </ul>
+  const specialNavbarForHome = () => {
+    return (
+      <div className="slider-area">
+        <div className="single-slider slider-height d-flex align-items-center">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-xl-11 col-lg-12">
+                {/* <!--Hero form --> */}
+                <form action="#" className="search-box">
+                  <div className="input-form">
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Title is..."
+                      onChange={handleChange("title")}
+                    />
+                    {/* <!-- icon --> */}
+                    <div className="icon">
+                      <i className="fa fa-book"></i>
                     </div>
                   </div>
+                  <div className="input-form2">
+                    <input
+                      type="text"
+                      name="topics"
+                      placeholder="Topics"
+                      onChange={handleChange("description")}
+                    />
+                    {/* <!-- icon --> */}
+                    <div className="icon">
+                      <i className="fa fa-check-circle"></i>
+                    </div>
+                  </div>
+
+                  <div className="input-form2">
+                    <select
+                      name="subject"
+                      id="subject"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        borderRadius: "0px",
+                      }}
+                      onChange={handleChange("subject")}
+                      className="nice-select"
+                    >
+                      <option value="">All books</option>
+
+                      {books.map((data, index) => (
+                        <option
+                          key={index}
+                          value={data.subject}
+                          className="list-group-item"
+                        >
+                          {data.subject}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="search-form">
+                    <a
+                      href="#toSearchResults"
+                      //onClick={(event) => onSubmitHnadle(event)}
+                      className="genric-btn info input-form"
+                    >
+                      <i className="fas fa-search"></i> Search
+                    </a>
+                  </div>
+                </form>
+              </div>
+              <div className="col-lg-12">
+                <div className="popular-search text-center ">
+                  <ul>
+                    <li>
+                      <p>Popular search:</p>
+                    </li>
+                    <li>
+                      <a href="#">#User experience designer</a>
+                    </li>
+                    <li>
+                      <a href="#">#Marketing</a>
+                    </li>
+                    <li>
+                      <a href="#">#Programmer</a>
+                    </li>
+                    <li>
+                      <a href="#">#Finance</a>
+                    </li>
+                    <li>
+                      <a href="#">#UI designer</a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          {/* <!--Hero Area End--> */}
-          {/* <!--? Brand Area Start  */}
+        </div>
+      </div>
+    );
+  };
+  return (
+    <div>
+      <Base showDefaultHeroSection="false">
+        <div>
+          {specialNavbarForHome()}
           <div
             className="brand-area"
             id="toSearchResults"
@@ -171,7 +176,16 @@ export default function Home() {
                     return (
                       <div className="table-row" key={index}>
                         <div className="serial">{index + 1}</div>
-                        <div className="country">{books.title}</div>
+
+                        <Link
+                          to={{
+                            pathname: `/detailedPage`,
+                            state: books.id,
+                          }}
+                        >
+                          <div className="country">{books.title}</div>
+                        </Link>
+
                         <div className="country">{books.author}</div>
                         <div className="visit">
                           {getNumberOfLikes(books.like)}
@@ -196,6 +210,56 @@ export default function Home() {
             </div>
           </div>
         </div>
+        {/* <!--? cards --> */}
+        <div className="container mt-50">
+          <section className="job-post pt-top section-bg2">
+            <div className="container">
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="single-features single-features1 mb-40 pt-60">
+                    <div className="job-post-banner">
+                      <img
+                        src="assets/img/gallery/job-pos-banner1.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className="features-caption">
+                      <h3>Browse for Books</h3>
+                      <p>
+                        Browse Books And Materials Posted By Other Users, And
+                        Download It If You Find Them Worthy!
+                      </p>
+                      <a href="#" className="genric-btn info circle">
+                        Browse Book
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="single-features single-features2 mb-40 pt-60">
+                    <div className="job-post-banner">
+                      <img
+                        src="assets/img/gallery/job-pos-banner2.png"
+                        alt=""
+                      />
+                    </div>
+                    <div className="features-caption">
+                      <h3>Upload book</h3>
+                      <p>
+                        Browse Books And Materials Posted By Other Users, And
+                        Download It If You Find Them Worthy!
+                      </p>
+                      <a href="/uploadBook" className="genric-btn info circle">
+                        Browse Book
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        {/* <!-- card End --> */}
         <div className="container mt-50">
           <div className="row no-gutters">
             <CategoryCard
@@ -233,10 +297,7 @@ export default function Home() {
           </div>
         </section>
         {/* <!-- Our Services End --> */}
-        {/* <!--? About Area Start--> */}
-        {/* <!--  */}
 
-        {/* <!-- About Area End--> */}
         {/* <!--? Top Jobs Start */}
         <section className="top-jobs section-padding40 fix">
           <div className="container-fluid p-0">
@@ -254,106 +315,10 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="top-job-slider">
-              {/* <!-- Single -> */}
-              <div className="single-top-jobs">
-                <div className="services-ion">
-                  <img src="assets/img/icon/jon-iocn1.svg" alt="" />
-                </div>
-                <div className="services-cap">
-                  <h5>
-                    <a href="#">Design & creatives</a>
-                  </h5>
-                  <p>
-                    the automated proocess has begun automated process starts as
-                    soon as your clothes go into.
-                  </p>
-                  <a href="#" className="btn">
-                    Apply Now
-                  </a>
-                </div>
-                {/* <div className="stickers">
-                  <span>Remote</span>
-                </div> */}
-              </div>
-              {/* <!-- Single -- */}
-
-              <div className="single-top-jobs">
-                <div className="services-ion">
-                  <img src="assets/img/icon/jon-iocn5.svg" alt="" />
-                </div>
-                <div className="services-cap">
-                  <h5>
-                    <a href="#">Design & creatives</a>
-                  </h5>
-                  <p>
-                    the automated proocess has begun automated process starts as
-                    soon as your clothes go into.
-                  </p>
-                  <a href="#" className="btn">
-                    Apply Now
-                  </a>
-                </div>
-                {/* <div className="stickers">
-                  <span>Remote</span>
-                </div> */}
-              </div>
-              {/* <!-- Single  */}
-              <div className="single-top-jobs">
-                <div className="services-ion">
-                  <img src="assets/img/icon/jon-iocn2.svg" alt="" />
-                </div>
-                <div className="services-cap">
-                  <h5>
-                    <a href="#">Design & creatives</a>
-                  </h5>
-                  <p>
-                    the automated proocess has begun automated process starts as
-                    soon as your clothes go into.
-                  </p>
-                  <a href="#" className="btn">
-                    Apply Now
-                  </a>
-                </div>
-                {/* <div className="stickers">
-                  <span>Remote</span>
-                </div> */}
-              </div>
-            </div>
           </div>
         </section>
 
         {/* <!-- Top Jobs End --> */}
-        {/* <!--? job Post Start --> */}
-        <section className="job-post pt-top section-bg2">
-          <div className="container">
-            <div className="row">
-              <Card
-                title="Browse for Books"
-                paragraph="Browse Books And Materials Posted By Other Users, And Download It If You Find Them Worthy!"
-                buttonName="Browse Book"
-              />
-              <div className="col-lg-6">
-                <div className="single-features single-features2 mb-40 pt-60">
-                  <div className="job-post-banner">
-                    <img src="assets/img/gallery/job-pos-banner2.png" alt="" />
-                  </div>
-                  <div className="features-caption">
-                    <h3>Browse for Books</h3>
-                    <p>
-                      Browse Books And Materials Posted By Other Users, And
-                      Download It If You Find Them Worthy!
-                    </p>
-                    <a href="#" className="border-btn">
-                      Browse Book
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* <!-- job Post End --> */}
 
         {/* <!--? Want To work 01 */}
         <section className="wantToWork-area">

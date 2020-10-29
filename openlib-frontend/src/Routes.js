@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import PrivateRoutes from "./auth/helper/privateRouters";
+import BookDetails from "./core/books/CRUD/BookDetails";
 import uploadBook from "./core/books/CRUD/UploadBook";
 import Home from "./core/commonComponents/Home";
 import Signin from "./user/Signin";
@@ -16,6 +17,7 @@ const Routes = () => {
 
           <PrivateRoutes path="/" exact component={Home} />
           <PrivateRoutes path="/uploadBook" exact component={uploadBook} />
+          <PrivateRoutes path="/detailedPage" exact component={BookDetails} />
         </Switch>
       </BrowserRouter>
     </div>

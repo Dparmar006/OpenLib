@@ -28,13 +28,13 @@ function Footer() {
                       <a href="#">
                         <i className="fab fa-twitter"></i>
                       </a>
-                      <a href="#">
+                      <a href="http://www.twitter.com/pistanthrobian">
                         <i className="fab fa-facebook-f"></i>
                       </a>
-                      <a href="#">
+                      <a href="http://www.instagram.com/yesss_finally_he">
                         <i className="fab fa-instagram"></i>
                       </a>
-                      <a href="#">
+                      <a href="http://www.github.com/dparmar006">
                         <i className="fab fa-github"></i>
                       </a>
                     </div>
@@ -49,18 +49,6 @@ function Footer() {
                       <li>
                         <a href="#">Engginering</a>
                       </li>
-                      <li>
-                        <a href="#">Programing</a>
-                      </li>
-                      <li>
-                        <a href="#">Design & creatives</a>
-                      </li>
-                      <li>
-                        <a href="#">Market Analysis</a>
-                      </li>
-                      <li>
-                        <a href="#">Biography</a>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -72,18 +60,6 @@ function Footer() {
                     <ul>
                       <li>
                         <a href="#">Technical</a>
-                      </li>
-                      <li>
-                        <a href="#">Physics Theories</a>
-                      </li>
-                      <li>
-                        <a href="#">Accounting</a>
-                      </li>
-                      <li>
-                        <a href="#">Programing</a>
-                      </li>
-                      <li>
-                        <a href="#">Architecture</a>
                       </li>
                     </ul>
                   </div>
@@ -97,18 +73,6 @@ function Footer() {
                       <li>
                         <a href="#">Design & creatives</a>
                       </li>
-                      <li>
-                        <a href="#">Story Tellers</a>
-                      </li>
-                      <li>
-                        <a href="#">Space Research</a>
-                      </li>
-                      <li>
-                        <a href="#">Motivation</a>
-                      </li>
-                      <li>
-                        <a href="#">Managment Skiils</a>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -120,18 +84,6 @@ function Footer() {
                     <ul>
                       <li>
                         <a href="#">News & Magazines</a>
-                      </li>
-                      <li>
-                        <a href="#">Geographical Happenings</a>
-                      </li>
-                      <li>
-                        <a href="#">Economics Affairs</a>
-                      </li>
-                      <li>
-                        <a href="#">Global Events</a>
-                      </li>
-                      <li>
-                        <a href="#">Political Affiars</a>
                       </li>
                     </ul>
                   </div>
@@ -146,7 +98,7 @@ function Footer() {
         <div className="container">
           <div className="footer-border">
             <div className="row d-flex align-items-center">
-              <div className="col-xl-12 ">Credits here</div>
+              {/* <div className="col-xl-12 ">Credits here</div> */}
             </div>
           </div>
         </div>

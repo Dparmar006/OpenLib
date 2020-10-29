@@ -66,3 +66,14 @@ export const deleteBookHelper = (bookId) => {
     })
     .catch((error) => console.log(error));
 };
+
+// Show book
+export const getBookDetailHelper = (bookId) => {
+  return fetch(`${API}books/${bookId}/`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};

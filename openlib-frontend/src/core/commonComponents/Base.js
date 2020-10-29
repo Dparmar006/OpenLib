@@ -12,7 +12,7 @@ const Base = ({
   return (
     <div>
       <div>
-        <div id="preloader-active">
+        {/* <div id="preloader-active">
           <div className="preloader d-flex align-items-center justify-content-center">
             <div className="preloader-inner position-relative">
               <div className="preloader-circle"></div>
@@ -21,7 +21,7 @@ const Base = ({
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <Navbar />
       {showDefaultHeroSection === "true" ? (
