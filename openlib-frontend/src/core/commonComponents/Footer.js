@@ -25,11 +25,8 @@ function Footer() {
                     </div>
                     {/* <!-- social --> */}
                     <div className="footer-social">
-                      <a href="#">
-                        <i className="fab fa-twitter"></i>
-                      </a>
                       <a href="http://www.twitter.com/pistanthrobian">
-                        <i className="fab fa-facebook-f"></i>
+                        <i className="fab fa-twitter"></i>
                       </a>
                       <a href="http://www.instagram.com/yesss_finally_he">
                         <i className="fab fa-instagram"></i>

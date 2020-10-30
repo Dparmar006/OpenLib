@@ -150,67 +150,81 @@ export default function Home() {
       </div>
     );
   };
+
+  const searchResultTable = () => {
+    return (
+      <div
+        className="brand-area"
+        id="toSearchResults"
+        style={{ marginTop: "-200px" }}
+      >
+        <div className="container">
+          <div className="progress-table-wrap">
+            <div className="progress-table">
+              <div className="table-head shadow-sm">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Author</th>
+                      <th scope="col">Likes</th>
+                      <th scope="col">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {books.map((books, index) => {
+                      return (
+                        <tr key={books.id}>
+                          <th scope="row">{index + 1}</th>
+                          <td>{books.title}</td>
+                          <td>{books.author}</td>
+                          <td>{getNumberOfLikes(books.like)}</td>
+                          <td style={{ display: "flex" }}>
+                            <a
+                              href={books.file}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-black-50 m-2"
+                            >
+                              <div className="icon">
+                                <i className="fa fa-download"></i>
+                              </div>
+                            </a>
+                            <Link
+                              className="like-info m-2"
+                              to={{
+                                pathname: `/detailedPage`,
+                                state: books.id,
+                              }}
+                            >
+                              <div className="icon" style={{ color: "gray" }}>
+                                <i className="fa fa-info-circle"></i>
+                              </div>
+                            </Link>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/*  */}
+      </div>
+    );
+  };
   return (
     <div>
       <Base showDefaultHeroSection="false">
         <div>
           {specialNavbarForHome()}
-          <div
-            className="brand-area"
-            id="toSearchResults"
-            style={{ marginTop: "-200px" }}
-          >
-            <div className="container">
-              <h3 className="mb-30 text-white">Search results...</h3>
-              <div className="progress-table-wrap">
-                <div className="progress-table">
-                  <div className="table-head shadow-sm">
-                    <div className="serial">#</div>
-                    <div className="country">Book Title</div>
-                    <div className="country">Author</div>
-                    <div className="visit">Likes</div>
-                    <div className="visit">Download</div>
-                  </div>
-                  {/* SINGLE ROW OF RESULT */}
-                  {books.map((books, index) => {
-                    return (
-                      <div className="table-row" key={index}>
-                        <div className="serial">{index + 1}</div>
-
-                        <Link
-                          to={{
-                            pathname: `/detailedPage`,
-                            state: books.id,
-                          }}
-                        >
-                          <div className="country">{books.title}</div>
-                        </Link>
-
-                        <div className="country">{books.author}</div>
-                        <div className="visit">
-                          {getNumberOfLikes(books.like)}
-                        </div>
-                        <div className="country">
-                          <a
-                            href={books.file}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black-50"
-                          >
-                            <div className="icon">
-                              <i className="fa fa-download"></i>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
+          {searchResultTable()}
         </div>
         {/* <!--? cards --> */}
+
         <div className="container mt-50">
           <section className="job-post pt-top section-bg2">
             <div className="container">
@@ -259,6 +273,7 @@ export default function Home() {
             </div>
           </section>
         </div>
+
         {/* <!-- card End --> */}
         <div className="container mt-50">
           <div className="row no-gutters">
@@ -297,28 +312,6 @@ export default function Home() {
           </div>
         </section>
         {/* <!-- Our Services End --> */}
-
-        {/* <!--? Top Jobs Start */}
-        <section className="top-jobs section-padding40 fix">
-          <div className="container-fluid p-0">
-            <div className="row justify-content-center">
-              <div className="col-xl-4 col-lg-7 col-md-9">
-                {/* <!-- Section Tittle  */}
-                <div className="section-tittle text-center mb-80">
-                  <h2>Browse top jobs</h2>
-                  <p>
-                    the automated proocess has begun automated process starts as
-                    soon as your clothes go into the machine. the automated
-                    proocess has begun outcome is gleaming clothes. Placeholder
-                    text commonly used.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* <!-- Top Jobs End --> */}
 
         {/* <!--? Want To work 01 */}
         <section className="wantToWork-area">

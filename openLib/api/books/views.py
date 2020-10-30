@@ -179,11 +179,18 @@ class BooksViewSet(viewsets.ModelViewSet):
         bookSubject = request.data.get('subject')
         bookEdition = request.data.get('edition')
 
+        if not book:
+            return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please, select a book to upload'})
+        try:
+            bookWithTitle = Books.objects.get(title=bookTitle)
+        except:
+            return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Book with this title already exists, Please give new title'})
+
         userModel = get_user_model()
         try:
             user = userModel.objects.get(pk=userid)
         except userModel.DoesNotExist:
-            return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'Authentication failed, Please re-login'})
+            return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Authentication failed, Please re-login'})
 
         Books.objects.create(title=bookTitle, description=bookDescription,
                              author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)

@@ -46,6 +46,7 @@ const UploadBook = () => {
       .then((data) => {
         if (data.error) {
           console.log(data);
+          setBookInfo({ ...bookInfo, msg: data.error });
         } else {
           setBookInfo({
             ...bookInfo,
@@ -77,12 +78,35 @@ const UploadBook = () => {
       file: event.target.files[0] || null,
     });
   };
-
+  const successMessage = () => {
+    return (
+      <div>
+        <div style={{ display: success ? "block" : "none" }}>
+          <p>{msg}</p>
+        </div>
+      </div>
+    );
+  };
+  const errorMessage = () => {
+    return (
+      <div>
+        <div style={{ display: error ? "block" : "none" }}>
+          <p>{msg}</p>
+        </div>
+      </div>
+    );
+  };
   return (
-    <Base
-      pageTitle="Fill details of your book"
-      pageDescription={msg.length > 0 ? msg : "Fill details of your book"}
-    >
+    <Base pageTitle="Fill details of your book">
+      <div className="container mt-5">
+        <div className="col-lg-6">
+          <blockquote className="generic-blockquote">
+            {successMessage()}
+            {errorMessage()}
+            {/* {loadingMessage()} */}
+          </blockquote>
+        </div>
+      </div>
       <div className="container m-10">
         <form action="" encType="multipart/form-data">
           <div className="row">
