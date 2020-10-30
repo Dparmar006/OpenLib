@@ -9,6 +9,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
 from .models import CustomUser, Books
+from django.db.models import Count
 from .serializers import UserSerializer, BooksSerializer, BooksUpdateSerializer
 
 import re
@@ -165,7 +166,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class BooksViewSet(viewsets.ModelViewSet):
-    queryset = Books.objects.all()
+    queryset = Books.objects.annotate(
+        num_authors=Count('like')).order_by('-num_authors')
     serializer_class = BooksSerializer
     authentication_classes = []
     permission_classes = []
@@ -177,6 +179,7 @@ class BooksViewSet(viewsets.ModelViewSet):
         bookDescription = request.data.get('description')
         bookAuthor = request.data.get('author')
         bookSubject = request.data.get('subject')
+        bookStream = request.data.get('stream')
         bookEdition = request.data.get('edition')
 
         if not book:
@@ -193,7 +196,7 @@ class BooksViewSet(viewsets.ModelViewSet):
             return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Authentication failed, Please re-login'})
 
         Books.objects.create(title=bookTitle, description=bookDescription,
-                             author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=user, file=book)
+                             author=bookAuthor, edition=bookEdition, subject=bookSubject, stream=bookStream, uploaded_by=user, file=book)
         return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'book added'})
 
 
