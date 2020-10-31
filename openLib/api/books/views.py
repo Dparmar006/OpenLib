@@ -44,15 +44,18 @@ def signup(request, *args, **kwargs):
     if not request.method == 'POST':
         return JsonResponse({'success': 'true', 'error': 'true', 'msg': 'We acccept only post requests'})
 
-    username = request.POST.get('email')
+    email = request.POST.get('email')
     phone = request.POST.get('phone')
     password = request.POST.get('password')
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
 
+    if email == "" or password == "" or first_name == "":
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'These fields can not be blank'})
+
     regex = '[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+'
 
-    if(re.match(regex, str(username))):
+    if(re.match(regex, str(email))):
         print("valid Email")
     else:
         return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please, Enter a vaid email address'})
@@ -62,11 +65,13 @@ def signup(request, *args, **kwargs):
 
     userModel = get_user_model()
     try:
-        userExist = userModel.objects.get(email=username)
+        userExist = userModel.objects.get(email=email)
         return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Account with this email already exist '})
     except:
         qry = CustomUser.objects.create(
-            email=username, password=password, phone=phone, first_name=first_name, last_name=last_name)
+            email=email,  phone=phone, first_name=first_name, last_name=last_name)
+        qry.set_password(password)
+        qry.save()
         if qry:
             return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'Account created !'})
     return JsonResponse({'error': 'true', 'success': 'false', 'msg': 'Something went wrong'})
@@ -79,6 +84,9 @@ def signin(request, *args, **kwargs):
 
     username = request.POST.get('email')
     password = request.POST.get('password')
+
+    if username == "" or password == "":
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please enter values'})
 
     UserModel = get_user_model()
     try:
@@ -181,6 +189,9 @@ class BooksViewSet(viewsets.ModelViewSet):
         bookSubject = request.data.get('subject')
         bookStream = request.data.get('stream')
         bookEdition = request.data.get('edition')
+
+        if bookTitle == "" or bookDescription == "" or bookAuthor == "" or bookSubject == "" or bookStream == "":
+            return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please enter values'})
 
         if not book:
             return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please, select a book to upload'})

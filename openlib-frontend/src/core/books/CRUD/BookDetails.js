@@ -1,14 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { checkAuthenticationToken } from "../../../auth/helper";
 import Base from "../../commonComponents/Base";
 import { getBookDetailHelper, getNumberOfLikes } from "../helper/coreApiCalls";
 
 const BookDetails = () => {
   const [book, setBook] = useState([]);
+  const [liked, setLiked] = useState(false);
 
   var location = useLocation();
   const bookId = location.state;
 
+  const haveUserLikedThisBook = () => {
+    const userId =
+      checkAuthenticationToken() && checkAuthenticationToken().user.id;
+    for (const liker in book.like) {
+      console.log(liker);
+      if (liker.endsWith("/" + userId + "/")) {
+        return true;
+      }
+    }
+  };
+  useEffect(() => {
+    if (haveUserLikedThisBook()) {
+      setLiked(true);
+    }
+  }, []);
   getBookDetailHelper(bookId)
     .then((data) => {
       setBook(data);
@@ -17,8 +34,8 @@ const BookDetails = () => {
 
   const otherDetails = () => {
     return (
-      <div class="col-lg-12">
-        <div class="blog_right_sidebar">
+      <div className="col-lg-12">
+        <div className="blog_right_sidebar">
           <aside className="single_sidebar_widget popular_post_widget">
             <h3 className="widget_title" style={{ color: "#2d2d2d" }}>
               Other details
@@ -40,8 +57,8 @@ const BookDetails = () => {
       pageDescription={`${book.stream}   ( ${book.subject} )`}
     >
       <div className="container mt-50">
-        <div class="col-xl-7 col-lg-8">
-          <div class="top-jobs mb-50">
+        <div className="col-xl-7 col-lg-8">
+          <div className="top-jobs mb-50">
             <div className="single-top-jobs">
               <div className="services-ion">
                 <div>
@@ -56,10 +73,11 @@ const BookDetails = () => {
 
                 {/* <img src="assets/img/icon/jon-iocn1.svg" alt="" /> */}
               </div>
+
               <div className="services-cap">
                 <h5>
                   <a href="#">
-                    {book.title} - by {book.author}
+                    {liked} {book.title} - by {book.author}
                   </a>
                 </h5>
                 <p>{book.description}</p>
