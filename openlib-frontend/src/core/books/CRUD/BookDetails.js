@@ -1,36 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { checkAuthenticationToken } from "../../../auth/helper";
+import { API } from "../../../backend";
 import Base from "../../commonComponents/Base";
 import { getBookDetailHelper, getNumberOfLikes } from "../helper/coreApiCalls";
 
 const BookDetails = () => {
   const [book, setBook] = useState([]);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState("");
 
-  var location = useLocation();
+  const location = useLocation();
   const bookId = location.state;
 
-  const haveUserLikedThisBook = () => {
-    const userId =
-      checkAuthenticationToken() && checkAuthenticationToken().user.id;
-    for (const liker in book.like) {
-      console.log(liker);
-      if (liker.endsWith("/" + userId + "/")) {
-        return true;
-      }
-    }
-  };
-  useEffect(() => {
-    if (haveUserLikedThisBook()) {
-      setLiked(true);
-    }
-  }, []);
   getBookDetailHelper(bookId)
     .then((data) => {
       setBook(data);
     })
     .catch((error) => console.log(error));
+
+  useEffect(() => {
+    getBookDetailHelper();
+  }, []);
+
+  const isAlreadyLikedHelper = () => {
+    const userId =
+      checkAuthenticationToken() && checkAuthenticationToken().user.id;
+    return fetch(`${API}books/${userId}/${bookId}/checkLike/`, {
+      // /1/117/checkLike/
+      method: "GET",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    console.log(liked);
+    isAlreadyLikedHelper()
+      .then((data) => {
+        setLiked(data.like);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const otherDetails = () => {
     return (
@@ -61,12 +73,12 @@ const BookDetails = () => {
           <div className="top-jobs mb-50">
             <div className="single-top-jobs">
               <div className="services-ion">
-                <div>
+                <div style={{ marginTop: "-10px", fontSize: "20px" }}>
                   {getNumberOfLikes(book.like || "")}
                   <div className="icon" style={{ marginTop: "-60px" }}>
                     <i
                       className="fas fa-heart"
-                      style={{ color: "#a83f39" }}
+                      style={{ color: liked == "true" ? "#a83f39" : "grey" }}
                     ></i>
                   </div>
                 </div>
@@ -77,7 +89,7 @@ const BookDetails = () => {
               <div className="services-cap">
                 <h5>
                   <a href="#">
-                    {liked} {book.title} - by {book.author}
+                    {book.title} - by {book.author}
                   </a>
                 </h5>
                 <p>{book.description}</p>
@@ -95,13 +107,10 @@ const BookDetails = () => {
               </div>
             </div>
             <div></div>
-
-            {/* other */}
           </div>
         </div>
       </div>
     </Base>
   );
 };
-
 export default BookDetails;

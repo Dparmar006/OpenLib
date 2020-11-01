@@ -141,38 +141,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
 # NOTE: BOOK OPERATIONS ["ADD", "REMOVE", "VIEW"]
 
-# class BooksUpdateViewSet(viewsets.ModelViewSet):
-#     queryset = Books.objects.all()
-#     serializer_class = BooksUpdateSerializer
-#     authentication_classes = []
-#     permission_classes = []
-
-#     def post(self, request, *args, **kwargs):
-#         fileBook = request.data['file']
-#         print("entered in posy", fileBook)
-#         userid = request.data.get('id')
-#         bookTitle = request.data.get('title')
-#         bookDescription = request.data.get('description')
-#         bookAuthor = request.data.get('author')
-#         bookSubject = request.data.get('subject')
-#         bookEdition = request.data.get('edition')
-#         bookOwner = request.data.get('uploaded_by')
-#         liked_by = request.data.get('like')
-#         userModel = get_user_model()
-#         print(bookAuthor)
-#         try:
-#             user = userModel.objects.get(pk=userid)
-#         except userModel.DoesNotExist:
-#             return JsonResponse({'error': 'User does not exist'})
-
-#         qry = Books.objects.create(title=userid, description=bookDescription,
-#                                    author=bookAuthor, edition=bookEdition, subject=bookSubject, uploaded_by=bookOwner, file=fileBook, like=liked_by)
-#         if qry.save():
-#             return JsonResponse({'success': 'true', 'error': 'false', 'msg': f'{bookTitle}book added'})
-
-#         return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'something wrong in saving data'})
-
-
 class BooksViewSet(viewsets.ModelViewSet):
     queryset = Books.objects.annotate(
         num_authors=Count('like')).order_by('-num_authors')
@@ -281,3 +249,17 @@ def perfromActionOnBook(request, bookId, action):
         else:
             return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'Wrong URL/action on book'})
     return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'An error occured, Please do it again !'})
+
+
+@csrf_exempt
+def isAlreadyLiked(request, userId, bookId):
+    userModel = get_user_model()
+    try:
+        user = userModel.objects.get(pk=userId)
+    except:
+        return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Unauthorized, Please login again.'})
+    likedBooks = Books.objects.filter(like=user).values('pk')
+    for like in likedBooks:
+        if like.get('pk') == int(bookId):
+            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'liked', 'like': 'true'})
+    return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'Not Liked', 'like': 'false'})

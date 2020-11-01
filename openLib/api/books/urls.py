@@ -22,6 +22,7 @@ urlpatterns = [
          views.removeBook, name="remove a book"),
 
     path("<int:bookId>/<str:action>/",
-         views.perfromActionOnBook, name="Upvoting book")  # NOTE: LIKE, UNLIKE TODO: Report
-
+         views.perfromActionOnBook, name="actions"),  # NOTE: LIKE, UNLIKE TODO: Report
+    path("<int:userId>/<int:bookId>/checkLike/",
+         views.isAlreadyLiked, name="check if alredy liked")
 ]

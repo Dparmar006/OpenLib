@@ -171,7 +171,7 @@ function Signup() {
                     value={gender}
                   >
                     <option value="">Prefer not to say</option>
-                    <option value="Other">Other</option>
+                    <option value="other">Other</option>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                   </select>

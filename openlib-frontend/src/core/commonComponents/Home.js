@@ -320,7 +320,7 @@ export default function Home() {
               <div className="row align-items-center justify-content-between">
                 <div className="col-xl-7 col-lg-9 col-md-8">
                   <div className="wantToWork-caption wantToWork-caption2">
-                    <h2>Start finding your dream job</h2>
+                    <h2>Start finding your dream book</h2>
                     <p>
                       the automated proocess has begun automated process starts
                       as soon as your clothes go into the machine. the automated
