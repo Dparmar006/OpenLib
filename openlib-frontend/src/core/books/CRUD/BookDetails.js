@@ -47,7 +47,11 @@ const BookDetails = () => {
     console.log(liked);
     isAlreadyLikedHelper()
       .then((data) => {
-        setLiked(data.like);
+        if (data.like == "true") {
+          setLiked("true");
+        } else if (data.like == "false") {
+          setLiked("false");
+        }
       })
       .catch((error) => console.log(error));
   }, []);
@@ -135,7 +139,7 @@ const BookDetails = () => {
                   {getNumberOfLikes(book.like || "")}
                   <div className="icon" style={{ marginTop: "-60px" }}>
                     <i
-                      className="fas fa-heart"
+                      className="fas fa-thumbs-up"
                       style={{ color: liked == "true" ? "#a83f39" : "grey" }}
                     ></i>
                   </div>
