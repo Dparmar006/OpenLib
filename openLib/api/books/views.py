@@ -163,10 +163,12 @@ class BooksViewSet(viewsets.ModelViewSet):
 
         if not book:
             return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Please, select a book to upload'})
+
         try:
             bookWithTitle = Books.objects.get(title=bookTitle)
-        except:
             return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Book with this title already exists, Please give new title'})
+        except:
+            pass
 
         userModel = get_user_model()
         try:
@@ -233,22 +235,28 @@ def removeBook(request, bookId, id, token):
 
 
 @csrf_exempt
-def perfromActionOnBook(request, bookId, action):
+def perfromActionOnBook(request, bookId, userId, action):
     action = str(action).lower().strip()
     if request.method == 'POST':
+        userModel = get_user_model()
+        try:
+            user = userModel.objects.get(pk=userId)
+            print(user)
+        except userModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist'})
         if action == 'like':
             book = Books.objects.get(pk=bookId)
-            book.like.add(request.user)
+            book.like.add(user)
             book.save()
-            return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'You liked a book'})
+            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'You liked a book'})
         elif action == 'unlike':
             book = Books.objects.get(pk=bookId)
-            book.like.remove(request.user)
+            book.like.remove(user)
             book.save()
-            return JsonResponse({'success': 'True', 'error': 'False', 'msg': 'You unliked a book'})
+            return JsonResponse({'success': 'true', 'error': 'false', 'msg': 'You unliked a book'})
         else:
-            return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'Wrong URL/action on book'})
-    return JsonResponse({'error': 'True', 'success': 'False', 'msg': 'An error occured, Please do it again !'})
+            return JsonResponse({'success': 'false', 'error': 'true', 'msg': 'Wrong URL/action on book'})
+    return JsonResponse({'error': 'true', 'success': 'false', 'msg': 'An error occured, Please do it again !'})
 
 
 @csrf_exempt

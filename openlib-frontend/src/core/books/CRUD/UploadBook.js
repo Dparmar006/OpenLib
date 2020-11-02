@@ -16,6 +16,7 @@ const UploadBook = () => {
     msg: "",
     error: "",
     success: "",
+    loading: "",
   });
 
   const {
@@ -30,6 +31,7 @@ const UploadBook = () => {
     msg,
     error,
     success,
+    loading,
   } = bookInfo;
 
   const handleSubmit = (event) => {
@@ -46,7 +48,12 @@ const UploadBook = () => {
       .then((data) => {
         if (data.error) {
           console.log(data);
-          setBookInfo({ ...bookInfo, msg: data.error });
+          setBookInfo({
+            ...bookInfo,
+            msg: data.msg,
+            error: true,
+            success: false,
+          });
         } else {
           setBookInfo({
             ...bookInfo,
@@ -61,6 +68,7 @@ const UploadBook = () => {
             msg: data.msg,
             error: false,
             success: true,
+            loading: true,
           });
         }
       })
@@ -96,6 +104,16 @@ const UploadBook = () => {
       </div>
     );
   };
+  const loadingMessage = () => {
+    return (
+      <div>
+        <div style={{ display: loading ? "block" : "none" }}>
+          <p>Loading, Please wait</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <Base pageTitle="Fill details of your book">
       <div className="container mt-5">
@@ -103,7 +121,7 @@ const UploadBook = () => {
           <blockquote className="generic-blockquote">
             {successMessage()}
             {errorMessage()}
-            {/* {loadingMessage()} */}
+            {loadingMessage()}
           </blockquote>
         </div>
       </div>

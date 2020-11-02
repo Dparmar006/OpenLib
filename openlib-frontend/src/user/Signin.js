@@ -36,19 +36,21 @@ const Signin = () => {
   const errorMessage = () => {
     return (
       <div>
-        <div className="container mt-5">
-          <div className="col-lg-6">
-            <blockquote className="generic-blockquote">
-              <div style={{ display: error ? "block" : "none" }}>
-                <p>{msg}</p>
-              </div>
-            </blockquote>
-          </div>
+        <div style={{ display: error ? "block" : "none" }}>
+          <p>{msg}</p>
         </div>
       </div>
     );
   };
-
+  const loadingMessage = () => {
+    return (
+      <div>
+        <div style={{ display: loading ? "block" : "none" }}>
+          <p>Loading, Please wait</p>
+        </div>
+      </div>
+    );
+  };
   const {
     email,
     password,
@@ -106,9 +108,15 @@ const Signin = () => {
 
   return (
     <Base pageTitle="Sign In" pageDescription="Enter your email and password">
-      {/* TODO: remove the quoteblock error message blank */}
-      {successMessage()}
-      {errorMessage()}
+      <div className="container mt-5">
+        <div className="col-lg-6">
+          <blockquote className="generic-blockquote">
+            {successMessage()}
+            {errorMessage()}
+            {loadingMessage()}
+          </blockquote>
+        </div>
+      </div>
 
       <div className="container m-10">
         <form action="">

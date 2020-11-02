@@ -3,12 +3,20 @@ import { Link, useLocation } from "react-router-dom";
 import { checkAuthenticationToken } from "../../../auth/helper";
 import { API } from "../../../backend";
 import Base from "../../commonComponents/Base";
-import { getBookDetailHelper, getNumberOfLikes } from "../helper/coreApiCalls";
+import {
+  getBookDetailHelper,
+  getNumberOfLikes,
+  likeThisBook,
+  unlikeThisBook,
+} from "../helper/coreApiCalls";
 
 const BookDetails = () => {
   const [book, setBook] = useState([]);
   const [liked, setLiked] = useState("");
-
+  const [likeButtonInfo, setLikeButtonInfo] = useState({
+    msg: "",
+    success: "",
+  });
   const location = useLocation();
   const bookId = location.state;
 
@@ -20,7 +28,7 @@ const BookDetails = () => {
 
   useEffect(() => {
     getBookDetailHelper();
-  }, []);
+  }, [liked]);
 
   const isAlreadyLikedHelper = () => {
     const userId =
@@ -63,6 +71,52 @@ const BookDetails = () => {
       </div>
     );
   };
+
+  const likeButtonHandler = (event) => {
+    event.preventDefault();
+    likeThisBook(bookId)
+      .then((data) => {
+        console.log(data);
+        if (data.error == "true") {
+          setLikeButtonInfo({
+            ...likeButtonInfo,
+            msg: data.msg,
+            success: false,
+          });
+        } else if (data.success == "true") {
+          setLikeButtonInfo({
+            ...likeButtonInfo,
+            msg: data.msg,
+            success: true,
+          });
+          setLiked("true");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+  const unlikeButtonHandler = (event) => {
+    event.preventDefault();
+    unlikeThisBook(bookId)
+      .then((data) => {
+        console.log(data);
+        if (data.error == "true") {
+          setLikeButtonInfo({
+            ...likeButtonInfo,
+            msg: data.msg,
+            success: false,
+          });
+        } else if (data.success == "true") {
+          setLikeButtonInfo({
+            ...likeButtonInfo,
+            msg: data.msg,
+            success: true,
+          });
+          setLiked("false");
+        }
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <Base
       pageTitle={book.title}
@@ -72,7 +126,11 @@ const BookDetails = () => {
         <div className="col-xl-7 col-lg-8">
           <div className="top-jobs mb-50">
             <div className="single-top-jobs">
-              <div className="services-ion">
+              <div
+                className="services-ion"
+                // style={{ cursor: "pointer" }}
+                // onClick={(event) => likeButtonHandler(event)}
+              >
                 <div style={{ marginTop: "-10px", fontSize: "20px" }}>
                   {getNumberOfLikes(book.like || "")}
                   <div className="icon" style={{ marginTop: "-60px" }}>
@@ -82,15 +140,28 @@ const BookDetails = () => {
                     ></i>
                   </div>
                 </div>
-
-                {/* <img src="assets/img/icon/jon-iocn1.svg" alt="" /> */}
               </div>
-
+              <button
+                className="genric-btn info-border circle mx-2"
+                onClick={(event) => likeButtonHandler(event)}
+              >
+                <div className="icon">
+                  <i className="fa fa-thumbs-up"></i>
+                </div>
+              </button>
+              <button
+                className="genric-btn info-border circle"
+                onClick={(event) => unlikeButtonHandler(event)}
+              >
+                <div className="icon">
+                  <i className="fa fa-thumbs-down"></i>
+                </div>
+              </button>
               <div className="services-cap">
                 <h5>
-                  <a href="#">
+                  <h2>
                     {book.title} - by {book.author}
-                  </a>
+                  </h2>
                 </h5>
                 <p>{book.description}</p>
               </div>

@@ -41,11 +41,9 @@ export const uploadBookHelper = (book) => {
   console.log(formData);
   return fetch(`${API}books/uploadBook/`, {
     method: "POST",
-
     body: formData,
   })
     .then((response) => {
-      console.log(response);
       return response.json();
     })
     .catch((error) => console.log(error));
@@ -67,12 +65,36 @@ export const deleteBookHelper = (bookId) => {
     .catch((error) => console.log(error));
 };
 
-// Show book
+// Detail book
 export const getBookDetailHelper = (bookId) => {
   return fetch(`${API}books/${bookId}/`, {
     method: "GET",
   })
     .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+export const likeThisBook = (bookId) => {
+  const userId =
+    checkAuthenticationToken() && checkAuthenticationToken().user.id;
+  return fetch(`${API}books/${bookId}/${userId}/like/`, {
+    method: "POST",
+  })
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+export const unlikeThisBook = (bookId) => {
+  const userId =
+    checkAuthenticationToken() && checkAuthenticationToken().user.id;
+  return fetch(`${API}books/${bookId}/${userId}/unlike/`, {
+    method: "POST",
+  })
+    .then((response) => {
+      console.log(response);
       return response.json();
     })
     .catch((error) => console.log(error));
